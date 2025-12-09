@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Histórico Clínico - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/prontuarios.css">
+    <link rel="stylesheet" href="../styles/paciente-historico.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div id="sidebarContainer"></div>
+
+        <main class="main-content" id="mainContent">
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input" placeholder="Buscar no meu histórico...">
+                </div>
+                <div class="header-right">
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Paciente</div>
+                            <div class="profile-role" id="headerUserRole">Paciente</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">P</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1>Meu Histórico Clínico</h1>
+                </div>
+
+                <!-- Resumo de Saúde -->
+                <div class="health-summary">
+                    <div class="summary-card">
+                        <i class="fas fa-tint"></i>
+                        <div>
+                            <span class="label">Tipo Sanguíneo</span>
+                            <span class="value">O+</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <i class="fas fa-allergies"></i>
+                        <div>
+                            <span class="label">Alergias</span>
+                            <span class="value">Penicilina</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <i class="fas fa-heartbeat"></i>
+                        <div>
+                            <span class="label">Condições</span>
+                            <span class="value">Hipertensão</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <div>
+                            <span class="label">Última Consulta</span>
+                            <span class="value">15/11/2025</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico de Consultas -->
+                <div class="records-section">
+                    <h2><i class="fas fa-file-medical"></i> Histórico de Consultas</h2>
+
+                    <div class="record-item">
+                        <div class="record-header">
+                            <div class="record-date">
+                                <i class="fas fa-calendar"></i>
+                                <span>15 de Novembro de 2025</span>
+                            </div>
+                            <div class="record-doctor">
+                                <i class="fas fa-user-md"></i>
+                                <span>Dr. João Silva - Cardiologia</span>
+                            </div>
+                        </div>
+                        <div class="record-body">
+                            <div class="record-field">
+                                <strong>Queixa:</strong>
+                                <p>Dor no peito e falta de ar</p>
+                            </div>
+                            <div class="record-field">
+                                <strong>Diagnóstico:</strong>
+                                <p>Hipertensão controlada, sem alterações cardíacas</p>
+                            </div>
+                            <div class="record-field">
+                                <strong>Prescrição:</strong>
+                                <p>Losartana 50mg - 1x ao dia pela manhã</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="record-item">
+                        <div class="record-header">
+                            <div class="record-date">
+                                <i class="fas fa-calendar"></i>
+                                <span>10 de Outubro de 2025</span>
+                            </div>
+                            <div class="record-doctor">
+                                <i class="fas fa-user-md"></i>
+                                <span>Dra. Ana Costa - Clínico Geral</span>
+                            </div>
+                        </div>
+                        <div class="record-body">
+                            <div class="record-field">
+                                <strong>Queixa:</strong>
+                                <p>Dor de cabeça frequente</p>
+                            </div>
+                            <div class="record-field">
+                                <strong>Diagnóstico:</strong>
+                                <p>Enxaqueca relacionada ao estresse</p>
+                            </div>
+                            <div class="record-field">
+                                <strong>Prescrição:</strong>
+                                <p>Paracetamol 750mg - SOS dor</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="record-item">
+                        <div class="record-header">
+                            <div class="record-date">
+                                <i class="fas fa-calendar"></i>
+                                <span>05 de Setembro de 2025</span>
+                            </div>
+                            <div class="record-doctor">
+                                <i class="fas fa-user-md"></i>
+                                <span>Dr. Carlos Mendes - Oftalmologia</span>
+                            </div>
+                        </div>
+                        <div class="record-body">
+                            <div class="record-field">
+                                <strong>Queixa:</strong>
+                                <p>Dificuldade para enxergar de longe</p>
+                            </div>
+                            <div class="record-field">
+                                <strong>Diagnóstico:</strong>
+                                <p>Miopia leve (-1.25 grau)</p>
+                            </div>
+                            <div class="record-field">
+                                <strong>Prescrição:</strong>
+                                <p>Óculos de grau conforme receita anexa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exames -->
+                <div class="exams-section">
+                    <h2><i class="fas fa-flask"></i> Meus Exames</h2>
+                    <div class="exams-grid">
+                        <div class="exam-card">
+                            <div class="exam-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="exam-info">
+                                <h4>Hemograma Completo</h4>
+                                <span class="exam-date">10/11/2025</span>
+                            </div>
+                            <button class="btn-download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="exam-card">
+                            <div class="exam-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="exam-info">
+                                <h4>Eletrocardiograma</h4>
+                                <span class="exam-date">15/11/2025</span>
+                            </div>
+                            <button class="btn-download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="exam-card">
+                            <div class="exam-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="exam-info">
+                                <h4>Raio-X Tórax</h4>
+                                <span class="exam-date">20/10/2025</span>
+                            </div>
+                            <button class="btn-download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+</body>
+
+</html>

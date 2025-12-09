@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Dados - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/pacientes.css">
+    <link rel="stylesheet" href="../styles/paciente-dados.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar será carregada aqui -->
+        <div id="sidebarContainer"></div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input" placeholder="Buscar informações...">
+                </div>
+
+                <div class="header-right">
+                    <!-- Seletor de Role -->
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Paciente</div>
+                            <div class="profile-role" id="headerUserRole">Paciente</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">P</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1>Meus Dados Pessoais</h1>
+                    </div>
+                    <button class="btn btn-primary" id="editMyDataBtn">
+                        <i class="fas fa-edit"></i> Editar Meus Dados
+                    </button>
+                </div>
+
+                <!-- Card com dados do paciente -->
+                <div class="patient-data-card" id="patientDataCard">
+                    <div class="data-section">
+                        <h3><i class="fas fa-user"></i> Dados Pessoais</h3>
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <label>Nome Completo:</label>
+                                <span id="displayName">Maria Santos</span>
+                            </div>
+                            <div class="data-item">
+                                <label>CPF:</label>
+                                <span id="displayCpf">123.456.789-00</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Data de Nascimento:</label>
+                                <span id="displayBirthDate">15/03/1990</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Gênero:</label>
+                                <span id="displayGender">Feminino</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Email:</label>
+                                <span id="displayEmail">maria.santos@email.com</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Telefone:</label>
+                                <span id="displayPhone">(11) 98765-4321</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="data-section">
+                        <h3><i class="fas fa-map-marker-alt"></i> Endereço</h3>
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <label>CEP:</label>
+                                <span id="displayCep">01234-567</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Rua:</label>
+                                <span id="displayStreet">Rua das Flores</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Número:</label>
+                                <span id="displayNumber">123</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Complemento:</label>
+                                <span id="displayComplement">Apto 45</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Cidade:</label>
+                                <span id="displayCity">São Paulo</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Estado:</label>
+                                <span id="displayState">SP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="data-section">
+                        <h3><i class="fas fa-heartbeat"></i> Informações de Saúde</h3>
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <label>Tipo Sanguíneo:</label>
+                                <span id="displayBloodType">O+</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Alergias:</label>
+                                <span id="displayAllergies">Penicilina</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Convênio:</label>
+                                <span id="displayInsurance">Unimed</span>
+                            </div>
+                            <div class="data-item full-width">
+                                <label>Histórico Médico:</label>
+                                <span id="displayMedicalHistory">Hipertensão controlada</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="data-section">
+                        <h3><i class="fas fa-phone-alt"></i> Contato de Emergência</h3>
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <label>Nome:</label>
+                                <span id="displayEmergencyName">João Santos</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Telefone:</label>
+                                <span id="displayEmergencyPhone">(11) 91234-5678</span>
+                            </div>
+                            <div class="data-item">
+                                <label>Parentesco:</label>
+                                <span id="displayRelationship">Cônjuge</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="editDataModal" class="patient-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container patient-modal-container">
+            <div class="modal-card patient-modal-card">
+                <h2 class="modal-title">Editar Meus Dados</h2>
+
+                <form id="editDataForm" class="patient-form">
+                    <!-- Dados Pessoais -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Dados Pessoais</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label required">Nome Completo</label>
+                                <input type="text" id="editName" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">CPF</label>
+                                <input type="text" id="editCpf" class="form-input" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">Data de Nascimento</label>
+                                <input type="date" id="editBirthDate" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">Gênero</label>
+                                <select id="editGender" class="form-select" required>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="feminino">Feminino</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label required">Email</label>
+                                <input type="email" id="editEmail" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">Telefone</label>
+                                <input type="tel" id="editPhone" class="form-input" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Endereço -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Endereço</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">CEP</label>
+                                <input type="text" id="editCep" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Rua</label>
+                                <input type="text" id="editStreet" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Número</label>
+                                <input type="text" id="editNumber" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Complemento</label>
+                                <input type="text" id="editComplement" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Cidade</label>
+                                <input type="text" id="editCity" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Estado</label>
+                                <select id="editState" class="form-select">
+                                    <option value="SP">São Paulo</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <!-- Outros estados -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informações de Saúde -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Informações de Saúde</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Tipo Sanguíneo</label>
+                                <select id="editBloodType" class="form-select">
+                                    <option value="">Selecione...</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Alergias</label>
+                                <input type="text" id="editAllergies" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label class="form-label">Histórico Médico</label>
+                                <textarea id="editMedicalHistory" class="form-textarea" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contato de Emergência -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Contato de Emergência</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Nome</label>
+                                <input type="text" id="editEmergencyName" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Telefone</label>
+                                <input type="tel" id="editEmergencyPhone" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Parentesco</label>
+                                <input type="text" id="editRelationship" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="cancelEditBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-save">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Scripts -->
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+    <script>
+        // Dados do paciente (viriam do localStorage ou API)
+        const patientData = {
+            name: 'Maria Santos',
+            cpf: '123.456.789-00',
+            birthDate: '1990-03-15',
+            gender: 'feminino',
+            email: 'maria.santos@email.com',
+            phone: '(11) 98765-4321',
+            cep: '01234-567',
+            street: 'Rua das Flores',
+            number: '123',
+            complement: 'Apto 45',
+            city: 'São Paulo',
+            state: 'SP',
+            bloodType: 'O+',
+            allergies: 'Penicilina',
+            insurance: 'Unimed',
+            medicalHistory: 'Hipertensão controlada',
+            emergencyName: 'João Santos',
+            emergencyPhone: '(11) 91234-5678',
+            relationship: 'Cônjuge'
+        };
+
+        // Abrir modal de edição
+        document.getElementById('editMyDataBtn').addEventListener('click', () => {
+            // Preencher formulário com dados atuais
+            document.getElementById('editName').value = patientData.name;
+            document.getElementById('editCpf').value = patientData.cpf;
+            document.getElementById('editBirthDate').value = patientData.birthDate;
+            document.getElementById('editGender').value = patientData.gender;
+            document.getElementById('editEmail').value = patientData.email;
+            document.getElementById('editPhone').value = patientData.phone;
+            document.getElementById('editCep').value = patientData.cep;
+            document.getElementById('editStreet').value = patientData.street;
+            document.getElementById('editNumber').value = patientData.number;
+            document.getElementById('editComplement').value = patientData.complement;
+            document.getElementById('editCity').value = patientData.city;
+            document.getElementById('editState').value = patientData.state;
+            document.getElementById('editBloodType').value = patientData.bloodType;
+            document.getElementById('editAllergies').value = patientData.allergies;
+            document.getElementById('editMedicalHistory').value = patientData.medicalHistory;
+            document.getElementById('editEmergencyName').value = patientData.emergencyName;
+            document.getElementById('editEmergencyPhone').value = patientData.emergencyPhone;
+            document.getElementById('editRelationship').value = patientData.relationship;
+
+            document.getElementById('editDataModal').classList.remove('hidden');
+        });
+
+        // Fechar modal
+        document.getElementById('cancelEditBtn').addEventListener('click', () => {
+            document.getElementById('editDataModal').classList.add('hidden');
+        });
+
+        // Salvar dados
+        document.getElementById('editDataForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Atualizar dados
+            patientData.name = document.getElementById('editName').value;
+            patientData.birthDate = document.getElementById('editBirthDate').value;
+            patientData.gender = document.getElementById('editGender').value;
+            patientData.email = document.getElementById('editEmail').value;
+            patientData.phone = document.getElementById('editPhone').value;
+            patientData.cep = document.getElementById('editCep').value;
+            patientData.street = document.getElementById('editStreet').value;
+            patientData.number = document.getElementById('editNumber').value;
+            patientData.complement = document.getElementById('editComplement').value;
+            patientData.city = document.getElementById('editCity').value;
+            patientData.state = document.getElementById('editState').value;
+            patientData.bloodType = document.getElementById('editBloodType').value;
+            patientData.allergies = document.getElementById('editAllergies').value;
+            patientData.medicalHistory = document.getElementById('editMedicalHistory').value;
+            patientData.emergencyName = document.getElementById('editEmergencyName').value;
+            patientData.emergencyPhone = document.getElementById('editEmergencyPhone').value;
+            patientData.relationship = document.getElementById('editRelationship').value;
+
+            // Atualizar exibição
+            document.getElementById('displayName').textContent = patientData.name;
+            document.getElementById('displayBirthDate').textContent = new Date(patientData.birthDate).toLocaleDateString('pt-BR');
+            document.getElementById('displayGender').textContent = patientData.gender.charAt(0).toUpperCase() + patientData.gender.slice(1);
+            document.getElementById('displayEmail').textContent = patientData.email;
+            document.getElementById('displayPhone').textContent = patientData.phone;
+            document.getElementById('displayCep').textContent = patientData.cep;
+            document.getElementById('displayStreet').textContent = patientData.street;
+            document.getElementById('displayNumber').textContent = patientData.number;
+            document.getElementById('displayComplement').textContent = patientData.complement;
+            document.getElementById('displayCity').textContent = patientData.city;
+            document.getElementById('displayState').textContent = patientData.state;
+            document.getElementById('displayBloodType').textContent = patientData.bloodType;
+            document.getElementById('displayAllergies').textContent = patientData.allergies;
+            document.getElementById('displayMedicalHistory').textContent = patientData.medicalHistory;
+            document.getElementById('displayEmergencyName').textContent = patientData.emergencyName;
+            document.getElementById('displayEmergencyPhone').textContent = patientData.emergencyPhone;
+            document.getElementById('displayRelationship').textContent = patientData.relationship;
+
+            // Fechar modal
+            document.getElementById('editDataModal').classList.add('hidden');
+
+            alert('Dados atualizados com sucesso!');
+        });
+    </script>
+</body>
+
+</html>

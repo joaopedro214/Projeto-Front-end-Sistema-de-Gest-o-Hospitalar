@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Pacientes</title>
+    <link rel="stylesheet" href="../styles/pacientes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar será carregada aqui -->
+        <div id="sidebarContainer"></div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input"
+                        placeholder="Buscar pacientes, profissionais, prontuários...">
+                </div>
+
+                <div class="header-right">
+                    <!-- Seletor de Role -->
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Admin</div>
+                            <div class="profile-role" id="headerUserRole">Admin</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1>Gestão de Pacientes</h1>
+                    </div>
+                    <button class="btn btn-primary" id="newPatientBtn">+ Novo Paciente</button>
+                </div>
+
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="filterSearch">Buscar paciente:</label>
+                        <input type="text" id="filterSearch" class="filter-input" placeholder="Nome ou CPF...">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterStatus">Status:</label>
+                        <select id="filterStatus" class="filter-input">
+                            <option value="">Todos</option>
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-secondary" id="filterBtn">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-times"></i> Limpar
+                    </button>
+                </div>
+
+                <div class="patients-section">
+                    <div id="emptyState" class="empty-state hidden">
+                        <div class="empty-state-content">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-user-slash"></i>
+                            </div>
+                            <h2>Pacientes</h2>
+                            <p>Ainda não há pacientes registrados.</p>
+                            <p class="empty-state-hint">Comece cadastrando um.</p>
+                            <button class="btn btn-primary" id="newPatientBtnEmpty">
+                                + Cadastrar Primeiro Paciente
+                            </button>
+                        </div>
+                    </div>
+
+                    <table class="patients-table" id="patientsTable">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Telefone</th>
+                                <th>Última Visita</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientsTableBody">
+                            <tr>
+                                <td>Maria Silva</td>
+                                <td>123.456.789-00</td>
+                                <td>(11) 98765-4321</td>
+                                <td>15/10/2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-edit" title="Editar">
+                                            <i class="fas fa-pen"></i>Editar
+                                        </button>
+                                        <button class="btn-delete" title="Excluir">
+                                            <i class="fas fa-trash"></i>Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pedro Costa</td>
+                                <td>987.654.321-00</td>
+                                <td>(11) 91234-5678</td>
+                                <td>20/10/2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-edit" title="Editar">
+                                            <i class="fas fa-pen"></i>Editar
+                                        </button>
+                                        <button class="btn-delete" title="Excluir">
+                                            <i class="fas fa-trash"></i>Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Julia Oliveira</td>
+                                <td>456.789.123-00</td>
+                                <td>(11) 99876-5432</td>
+                                <td>25/10/2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-edit" title="Editar">
+                                            <i class="fas fa-pen"></i>Editar
+                                        </button>
+                                        <button class="btn-delete" title="Excluir">
+                                            <i class="fas fa-trash"></i>Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+    </main>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="detailsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalPatientName">Nome do Paciente</h2>
+                <button class="close-btn" id="closeModal">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Conteúdo será preenchido dinamicamente -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="editBtn">Editar</button>
+                <button class="btn btn-secondary" id="deleteBtn">Deletar</button>
+                <button class="btn btn-primary" id="closeModalBtn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição de Paciente -->
+    <div id="editPatientModal" class="patient-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container patient-modal-container">
+            <div class="modal-card patient-modal-card">
+                <h2 class="modal-title">Edição de Paciente</h2>
+
+                <form id="editPatientForm" class="patient-form">
+                    <!-- Seção 1: Dados Pessoais -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Dados Pessoais</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editFullName" class="form-label required">Nome Completo</label>
+                                <input type="text" id="editFullName" name="fullName" class="form-input" required
+                                    placeholder="Ex: João da Silva Santos">
+                                <span class="error-message" id="editFullNameError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editCpf" class="form-label required">CPF</label>
+                                <input type="text" id="editCpf" name="cpf" class="form-input" required
+                                    placeholder="000.000.000-00" maxlength="14">
+                                <span class="error-message" id="editCpfError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editBirthDate" class="form-label required">Data de Nascimento</label>
+                                <input type="date" id="editBirthDate" name="birthDate" class="form-input" required>
+                                <span class="error-message" id="editBirthDateError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editGender" class="form-label required">Gênero</label>
+                                <div class="select-wrapper">
+                                    <select id="editGender" name="gender" class="form-select" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="masculino">Masculino</option>
+                                        <option value="feminino">Feminino</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                                <span class="error-message" id="editGenderError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editEmail" class="form-label required">Email</label>
+                                <input type="email" id="editEmail" name="email" class="form-input" required
+                                    placeholder="exemplo@email.com">
+                                <span class="error-message" id="editEmailError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editPhone" class="form-label required">Telefone</label>
+                                <input type="tel" id="editPhone" name="phone" class="form-input" required
+                                    placeholder="(11) 98765-4321" maxlength="15">
+                                <span class="error-message" id="editPhoneError"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção 2: Endereço -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Endereço</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editCep" class="form-label required">CEP</label>
+                                <input type="text" id="editCep" name="cep" class="form-input" required
+                                    placeholder="00000-000" maxlength="9">
+                                <span class="error-message" id="editCepError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editStreet" class="form-label required">Rua</label>
+                                <input type="text" id="editStreet" name="street" class="form-input" required
+                                    placeholder="Rua Principal">
+                                <span class="error-message" id="editStreetError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editNumber" class="form-label required">Número</label>
+                                <input type="text" id="editNumber" name="number" class="form-input" required
+                                    placeholder="123">
+                                <span class="error-message" id="editNumberError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editComplement" class="form-label">Complemento</label>
+                                <input type="text" id="editComplement" name="complement" class="form-input"
+                                    placeholder="Apto 456">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editCity" class="form-label required">Cidade</label>
+                                <input type="text" id="editCity" name="city" class="form-input" required
+                                    placeholder="São Paulo">
+                                <span class="error-message" id="editCityError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editState" class="form-label required">Estado</label>
+                                <div class="select-wrapper">
+                                    <select id="editState" name="state" class="form-select" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="AC">Acre</option>
+                                        <option value="AL">Alagoas</option>
+                                        <option value="AP">Amapá</option>
+                                        <option value="AM">Amazonas</option>
+                                        <option value="BA">Bahia</option>
+                                        <option value="CE">Ceará</option>
+                                        <option value="DF">Distrito Federal</option>
+                                        <option value="ES">Espírito Santo</option>
+                                        <option value="GO">Goiás</option>
+                                        <option value="MA">Maranhão</option>
+                                        <option value="MT">Mato Grosso</option>
+                                        <option value="MS">Mato Grosso do Sul</option>
+                                        <option value="MG">Minas Gerais</option>
+                                        <option value="PA">Pará</option>
+                                        <option value="PB">Paraíba</option>
+                                        <option value="PR">Paraná</option>
+                                        <option value="PE">Pernambuco</option>
+                                        <option value="PI">Piauí</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="RN">Rio Grande do Norte</option>
+                                        <option value="RS">Rio Grande do Sul</option>
+                                        <option value="RO">Rondônia</option>
+                                        <option value="RR">Roraima</option>
+                                        <option value="SC">Santa Catarina</option>
+                                        <option value="SP">São Paulo</option>
+                                        <option value="SE">Sergipe</option>
+                                        <option value="TO">Tocantins</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                                <span class="error-message" id="editStateError"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção 3: Informações de Saúde -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Informações de Saúde</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editBloodType" class="form-label">Tipo Sanguíneo</label>
+                                <div class="select-wrapper">
+                                    <select id="editBloodType" name="bloodType" class="form-select">
+                                        <option value="">Selecione...</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editAllergies" class="form-label">Alergias</label>
+                                <input type="text" id="editAllergies" name="allergies" class="form-input"
+                                    placeholder="Ex: Penicilina, Amendoim">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="editMedicalHistory" class="form-label">Histórico Médico</label>
+                                <textarea id="editMedicalHistory" name="medicalHistory" class="form-textarea" rows="4"
+                                    placeholder="Descreva doenças crônicas, cirurgias anteriores ou outras informações relevantes..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editInsurance" class="form-label">Convênio</label>
+                            <div class="select-wrapper">
+                                <select id="editInsurance" name="insurance" class="form-select">
+                                    <option value="">Selecione...</option>
+                                    <option value="particular">Particular</option>
+                                    <option value="sus">SUS</option>
+                                    <option value="unimed">Unimed</option>
+                                    <option value="amil">Amil</option>
+                                    <option value="bradesco">Bradesco Saúde</option>
+                                    <option value="sulamerica">SulAmérica</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção 4: Contato de Emergência -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Contato de Emergência</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editEmergencyName" class="form-label required">Nome</label>
+                                <input type="text" id="editEmergencyName" name="emergencyName" class="form-input"
+                                    required placeholder="Nome da pessoa">
+                                <span class="error-message" id="editEmergencyNameError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editEmergencyPhone" class="form-label required">Telefone</label>
+                                <input type="tel" id="editEmergencyPhone" name="emergencyPhone" class="form-input"
+                                    required placeholder="(11) 98765-4321" maxlength="15">
+                                <span class="error-message" id="editEmergencyPhoneError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editRelationship" class="form-label">Parentesco/Relação</label>
+                                <input type="text" id="editRelationship" name="relationship" class="form-input"
+                                    placeholder="Ex: Cônjuge, Filho, Irmão">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensagem de Sucesso -->
+                    <div id="editSuccessMessage" class="alert alert-success hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Sucesso!</strong>
+                            <p>Paciente atualizado com sucesso no sistema.</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="cancelEditPatientBtn">Cancelar</button>
+                        <button type="reset" class="btn btn-secondary">Limpar Formulário</button>
+                        <button type="submit" class="btn btn-save">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro de Paciente -->
+    <div id="newPatientModal" class="patient-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container patient-modal-container">
+            <div class="modal-card patient-modal-card">
+                <h2 class="modal-title">Cadastro de Pacientes</h2>
+
+                <form id="patientForm" class="patient-form">
+                    <!-- Seção 1: Dados Pessoais -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Dados Pessoais</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName" class="form-label required">Nome Completo</label>
+                                <input type="text" id="fullName" name="fullName" class="form-input" required
+                                    placeholder="Ex: João da Silva Santos">
+                                <span class="error-message" id="fullNameError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cpf" class="form-label required">CPF</label>
+                                <input type="text" id="cpf" name="cpf" class="form-input" required
+                                    placeholder="000.000.000-00" maxlength="14">
+                                <span class="error-message" id="cpfError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="birthDate" class="form-label required">Data de Nascimento</label>
+                                <input type="date" id="birthDate" name="birthDate" class="form-input" required>
+                                <span class="error-message" id="birthDateError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gender" class="form-label required">Gênero</label>
+                                <div class="select-wrapper">
+                                    <select id="gender" name="gender" class="form-select" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="masculino">Masculino</option>
+                                        <option value="feminino">Feminino</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                                <span class="error-message" id="genderError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email" class="form-label required">Email</label>
+                                <input type="email" id="email" name="email" class="form-input" required
+                                    placeholder="exemplo@email.com">
+                                <span class="error-message" id="emailError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" class="form-label required">Telefone</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" required
+                                    placeholder="(11) 98765-4321" maxlength="15">
+                                <span class="error-message" id="phoneError"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção 2: Endereço -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Endereço</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cep" class="form-label required">CEP</label>
+                                <input type="text" id="cep" name="cep" class="form-input" required
+                                    placeholder="00000-000" maxlength="9">
+                                <span class="error-message" id="cepError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="street" class="form-label required">Rua</label>
+                                <input type="text" id="street" name="street" class="form-input" required
+                                    placeholder="Rua Principal">
+                                <span class="error-message" id="streetError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="number" class="form-label required">Número</label>
+                                <input type="text" id="number" name="number" class="form-input" required
+                                    placeholder="123">
+                                <span class="error-message" id="numberError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="complement" class="form-label">Complemento</label>
+                                <input type="text" id="complement" name="complement" class="form-input"
+                                    placeholder="Apto 456">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="city" class="form-label required">Cidade</label>
+                                <input type="text" id="city" name="city" class="form-input" required
+                                    placeholder="São Paulo">
+                                <span class="error-message" id="cityError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="state" class="form-label required">Estado</label>
+                                <div class="select-wrapper">
+                                    <select id="state" name="state" class="form-select" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="AC">Acre</option>
+                                        <option value="AL">Alagoas</option>
+                                        <option value="AP">Amapá</option>
+                                        <option value="AM">Amazonas</option>
+                                        <option value="BA">Bahia</option>
+                                        <option value="CE">Ceará</option>
+                                        <option value="DF">Distrito Federal</option>
+                                        <option value="ES">Espírito Santo</option>
+                                        <option value="GO">Goiás</option>
+                                        <option value="MA">Maranhão</option>
+                                        <option value="MT">Mato Grosso</option>
+                                        <option value="MS">Mato Grosso do Sul</option>
+                                        <option value="MG">Minas Gerais</option>
+                                        <option value="PA">Pará</option>
+                                        <option value="PB">Paraíba</option>
+                                        <option value="PR">Paraná</option>
+                                        <option value="PE">Pernambuco</option>
+                                        <option value="PI">Piauí</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="RN">Rio Grande do Norte</option>
+                                        <option value="RS">Rio Grande do Sul</option>
+                                        <option value="RO">Rondônia</option>
+                                        <option value="RR">Roraima</option>
+                                        <option value="SC">Santa Catarina</option>
+                                        <option value="SP">São Paulo</option>
+                                        <option value="SE">Sergipe</option>
+                                        <option value="TO">Tocantins</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                                <span class="error-message" id="stateError"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção 3: Informações de Saúde -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Informações de Saúde</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bloodType" class="form-label">Tipo Sanguíneo</label>
+                                <div class="select-wrapper">
+                                    <select id="bloodType" name="bloodType" class="form-select">
+                                        <option value="">Selecione...</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="allergies" class="form-label">Alergias</label>
+                                <input type="text" id="allergies" name="allergies" class="form-input"
+                                    placeholder="Ex: Penicilina, Amendoim">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="medicalHistory" class="form-label">Histórico Médico</label>
+                                <textarea id="medicalHistory" name="medicalHistory" class="form-textarea" rows="4"
+                                    placeholder="Descreva doenças crônicas, cirurgias anteriores ou outras informações relevantes..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="insurance" class="form-label">Convênio</label>
+                            <div class="select-wrapper">
+                                <select id="insurance" name="insurance" class="form-select">
+                                    <option value="">Selecione...</option>
+                                    <option value="particular">Particular</option>
+                                    <option value="sus">SUS</option>
+                                    <option value="unimed">Unimed</option>
+                                    <option value="amil">Amil</option>
+                                    <option value="bradesco">Bradesco Saúde</option>
+                                    <option value="sulamerica">SulAmérica</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção 4: Contato de Emergência -->
+                    <div class="form-group-section">
+                        <h3 class="form-section-title">Contato de Emergência</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="emergencyName" class="form-label required">Nome</label>
+                                <input type="text" id="emergencyName" name="emergencyName" class="form-input" required
+                                    placeholder="Nome da pessoa">
+                                <span class="error-message" id="emergencyNameError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emergencyPhone" class="form-label required">Telefone</label>
+                                <input type="tel" id="emergencyPhone" name="emergencyPhone" class="form-input" required
+                                    placeholder="(11) 98765-4321" maxlength="15">
+                                <span class="error-message" id="emergencyPhoneError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="relationship" class="form-label">Parentesco/Relação</label>
+                                <input type="text" id="relationship" name="relationship" class="form-input"
+                                    placeholder="Ex: Cônjuge, Filho, Irmão">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensagem de Sucesso -->
+                    <div id="successMessage" class="alert alert-success hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Sucesso!</strong>
+                            <p>Paciente cadastrado com sucesso no sistema.</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="cancelPatientBtn">Cancelar</button>
+                        <button type="reset" class="btn btn-secondary">Limpar Formulário</button>
+                        <button type="submit" class="btn btn-confirm">Cadastrar Paciente</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Scripts em ordem de dependência -->
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/botoes.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+    <script src="../pages/pacientes.js"></script>
+</body>
+
+</html>

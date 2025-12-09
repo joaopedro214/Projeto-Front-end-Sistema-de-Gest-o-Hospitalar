@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/relatorio.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar será carregada aqui -->
+        <div id="sidebarContainer"></div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input"
+                        placeholder="Buscar pacientes, profissionais, prontuários...">
+                </div>
+
+                <div class="header-right">
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Admin</div>
+                            <div class="profile-role" id="headerUserRole">Admin</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1>Relatórios</h1>
+                    <div class="header-actions">
+                        <select class="period-selector" id="periodSelector">
+                            <option value="7">Últimos 7 dias</option>
+                            <option value="30" selected>Últimos 30 dias</option>
+                            <option value="90">Últimos 90 dias</option>
+                            <option value="365">Último ano</option>
+                        </select>
+                        <button class="btn btn-primary" id="exportBtn">
+                            <i class="fas fa-download"></i> Exportar PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Métricas Principais -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background-color: #e0f2fe;">
+                            <i class="fas fa-user-injured" style="color: #0284c7;"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value" id="totalPatients">348</div>
+                            <div class="metric-label">Total de Pacientes</div>
+                            <div class="metric-change positive">
+                                <i class="fas fa-arrow-up"></i> 12% vs mês anterior
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background-color: #dbeafe;">
+                            <i class="fas fa-calendar-check" style="color: #2b479b;"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value" id="totalConsultations">156</div>
+                            <div class="metric-label">Consultas Realizadas</div>
+                            <div class="metric-change positive">
+                                <i class="fas fa-arrow-up"></i> 8% vs mês anterior
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background-color: #fef3c7;">
+                            <i class="fas fa-clock" style="color: #d97706;"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value" id="avgWaitTime">18 min</div>
+                            <div class="metric-label">Tempo Médio de Espera</div>
+                            <div class="metric-change negative">
+                                <i class="fas fa-arrow-down"></i> 5% vs mês anterior
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background-color: #dcfce7;">
+                            <i class="fas fa-star" style="color: #16a34a;"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value" id="satisfaction">4.8</div>
+                            <div class="metric-label">Satisfação dos Pacientes</div>
+                            <div class="metric-change positive">
+                                <i class="fas fa-arrow-up"></i> 0.3 pontos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos e Tabelas -->
+                <div class="report-grid">
+                    <!-- Consultas por Especialidade -->
+                    <div class="report-card">
+                        <div class="card-header">
+                            <h3>Consultas por Especialidade</h3>
+                            <button class="btn-icon" title="Mais opções">
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="chart-container" id="specialtyChart">
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar" style="height: 85%;" data-value="42"></div>
+                                        <span class="bar-label">Cardiologia</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar" style="height: 70%;" data-value="35"></div>
+                                        <span class="bar-label">Ortopedia</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar" style="height: 60%;" data-value="30"></div>
+                                        <span class="bar-label">Pediatria</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar" style="height: 50%;" data-value="25"></div>
+                                        <span class="bar-label">Dermatologia</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar" style="height: 48%;" data-value="24"></div>
+                                        <span class="bar-label">Neurologia</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status dos Leitos -->
+                    <div class="report-card">
+                        <div class="card-header">
+                            <h3>Ocupação de Leitos</h3>
+                            <button class="btn-icon" title="Mais opções">
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="beds-status">
+                                <div class="bed-stat">
+                                    <div class="bed-stat-header">
+                                        <span class="bed-stat-label">Disponíveis</span>
+                                        <span class="bed-stat-value">12</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 40%; background-color: #16a34a;"></div>
+                                    </div>
+                                </div>
+                                <div class="bed-stat">
+                                    <div class="bed-stat-header">
+                                        <span class="bed-stat-label">Ocupados</span>
+                                        <span class="bed-stat-value">15</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 50%; background-color: #dc2626;"></div>
+                                    </div>
+                                </div>
+                                <div class="bed-stat">
+                                    <div class="bed-stat-header">
+                                        <span class="bed-stat-label">Manutenção</span>
+                                        <span class="bed-stat-value">3</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 10%; background-color: #d97706;"></div>
+                                    </div>
+                                </div>
+                                <div class="total-beds">
+                                    <span>Total de Leitos:</span>
+                                    <strong>30</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profissionais Mais Ativos -->
+                    <div class="report-card full-width">
+                        <div class="card-header">
+                            <h3>Profissionais Mais Ativos</h3>
+                            <button class="btn-icon" title="Mais opções">
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <table class="report-table">
+                                <thead>
+                                    <tr>
+                                        <th>Profissional</th>
+                                        <th>Especialidade</th>
+                                        <th>Consultas</th>
+                                        <th>Avaliação</th>
+                                        <th>Taxa de Presença</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="professional-info">
+                                                <div class="professional-avatar">JS</div>
+                                                <span>Dr. João Santos</span>
+                                            </div>
+                                        </td>
+                                        <td>Cardiologia</td>
+                                        <td><strong>42</strong></td>
+                                        <td>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <span>4.9</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="presence-badge high">95%</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="professional-info">
+                                                <div class="professional-avatar">AL</div>
+                                                <span>Dra. Ana Lima</span>
+                                            </div>
+                                        </td>
+                                        <td>Pediatria</td>
+                                        <td><strong>38</strong></td>
+                                        <td>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <span>4.8</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="presence-badge high">92%</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="professional-info">
+                                                <div class="professional-avatar">PO</div>
+                                                <span>Dr. Paulo Oliveira</span>
+                                            </div>
+                                        </td>
+                                        <td>Ortopedia</td>
+                                        <td><strong>35</strong></td>
+                                        <td>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <span>4.7</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="presence-badge medium">88%</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="professional-info">
+                                                <div class="professional-avatar">MS</div>
+                                                <span>Dra. Mariana Silva</span>
+                                            </div>
+                                        </td>
+                                        <td>Dermatologia</td>
+                                        <td><strong>30</strong></td>
+                                        <td>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <span>4.9</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="presence-badge high">94%</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="professional-info">
+                                                <div class="professional-avatar">RC</div>
+                                                <span>Dr. Ricardo Costa</span>
+                                            </div>
+                                        </td>
+                                        <td>Neurologia</td>
+                                        <td><strong>28</strong></td>
+                                        <td>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <span>4.6</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="presence-badge medium">87%</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Telemedicina -->
+                    <div class="report-card">
+                        <div class="card-header">
+                            <h3>Telemedicina</h3>
+                            <button class="btn-icon" title="Mais opções">
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="telemedicine-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-video"></i>
+                                    <div class="stat-info">
+                                        <div class="stat-value">87</div>
+                                        <div class="stat-label">Teleconsultas</div>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-clock"></i>
+                                    <div class="stat-info">
+                                        <div class="stat-value">24 min</div>
+                                        <div class="stat-label">Duração Média</div>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <div class="stat-info">
+                                        <div class="stat-value">96%</div>
+                                        <div class="stat-label">Taxa de Sucesso</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Agendamentos -->
+                    <div class="report-card">
+                        <div class="card-header">
+                            <h3>Status de Agendamentos</h3>
+                            <button class="btn-icon" title="Mais opções">
+                                <i class="fas fa-ellipsis-vertical"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="appointment-stats">
+                                <div class="appointment-item">
+                                    <div class="appointment-dot confirmed"></div>
+                                    <div class="appointment-info">
+                                        <span class="appointment-label">Confirmados</span>
+                                        <span class="appointment-value">124</span>
+                                    </div>
+                                </div>
+                                <div class="appointment-item">
+                                    <div class="appointment-dot pending"></div>
+                                    <div class="appointment-info">
+                                        <span class="appointment-label">Pendentes</span>
+                                        <span class="appointment-value">32</span>
+                                    </div>
+                                </div>
+                                <div class="appointment-item">
+                                    <div class="appointment-dot cancelled"></div>
+                                    <div class="appointment-info">
+                                        <span class="appointment-label">Cancelados</span>
+                                        <span class="appointment-value">18</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+</body>
+
+<script src="../components/roles.js"></script>
+<script src="../components/navigation.js"></script>
+<script src="../components/sidebar.js"></script>
+<script src="../components/role-selector.js"></script>
+<script src="relatorio.js"></script>
+<script src="../components/botoes.js"></script>
+
+</html>

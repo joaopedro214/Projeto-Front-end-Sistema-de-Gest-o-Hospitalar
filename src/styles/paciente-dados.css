@@ -1,0 +1,208 @@
+/* Estilos específicos para paciente-dados.html */
+
+/* Card de Dados do Paciente */
+.patient-data-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+}
+
+.data-section {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.data-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.data-section h3 {
+    font-size: 18px;
+    color: #1d1d1f;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.data-section h3 i {
+    color: #2b479b;
+    font-size: 20px;
+}
+
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.data-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.data-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.data-item label {
+    font-size: 12px;
+    color: #86868b;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.data-item span {
+    font-size: 15px;
+    color: #1d1d1f;
+    font-weight: 500;
+}
+
+.data-item span:empty::before {
+    content: 'Não informado';
+    color: #d2d2d7;
+    font-style: italic;
+}
+
+/* Modal de Edição de Dados */
+#editDataModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    backdrop-filter: blur(4px);
+}
+
+#editDataModal:not(.hidden) {
+    display: flex;
+}
+
+#editDataModal .modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+#editDataModal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+#editDataModal .modal-header h2 {
+    font-size: 22px;
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+#editDataModal .close-modal {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #86868b;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+#editDataModal .close-modal:hover {
+    background: #f5f5f7;
+    color: #1d1d1f;
+}
+
+#editDataModal .modal-body {
+    padding: 24px;
+}
+
+#editDataModal .modal-footer {
+    display: flex;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 2px solid #f0f0f0;
+    justify-content: flex-end;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    #sidebarContainer {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1001;
+    }
+
+    #sidebarContainer.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .content-wrapper {
+        padding: 20px 15px;
+    }
+
+    .data-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #editDataModal .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    #editDataModal .modal-header,
+    #editDataModal .modal-body,
+    #editDataModal .modal-footer {
+        padding: 16px;
+    }
+
+    #editDataModal .modal-footer {
+        flex-direction: column;
+    }
+
+    #editDataModal .modal-footer .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    #sidebarContainer {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .content-wrapper {
+        padding: 15px 10px;
+    }
+}

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Agendamentos</title>
+    <link rel="stylesheet" href="../styles/consulta-agendamentos.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar será carregada aqui -->
+        <div id="sidebarContainer"></div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input"
+                        placeholder="Buscar pacientes, profissionais, prontuários...">
+                </div>
+
+                <div class="header-right">
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Admin</div>
+                            <div class="profile-role" id="headerUserRole">Admin</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1>Consulta de Agendamentos</h1>
+                    </div>
+                    <button class="btn btn-primary" id="newAppointmentBtn">+ Novo Agendamento</button>
+                </div>
+
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="filterDate">Data:</label>
+                        <input type="date" id="filterDate" class="filter-input">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterProfessional">Profissional:</label>
+                        <select id="filterProfessional" class="filter-input">
+                            <option value="">Todos os profissionais</option>
+                            <option value="dr-joao">Dr. João Santos</option>
+                            <option value="dra-ana">Dra. Ana Lima</option>
+                            <option value="dr-carlos">Dr. Carlos Mendes</option>
+                            <option value="dr-paulo">Dr. Paulo Oliveira</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterStatus">Status:</label>
+                        <select id="filterStatus" class="filter-input">
+                            <option value="">Todos os status</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="agendada">Agendada</option>
+                            <option value="cancelada">Cancelada</option>
+                            <option value="realizada">Realizada</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterSearch">Buscar paciente:</label>
+                        <input type="text" id="filterSearch" class="filter-input" placeholder="Nome ou CPF...">
+                    </div>
+
+                    <button class="btn btn-secondary" id="filterBtn"><i class="fas fa-filter"></i> Filtrar</button>
+                    <button class="btn btn-secondary" id="clearBtn"><i class="fas fa-times"></i> Limpar</button>
+                </div>
+
+                <div class="appointments-section">
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="table">
+                            <i class="fas fa-table"></i> Tabela
+                        </button>
+                    </div>
+
+                    <!-- Visualização em Tabela -->
+                    <div class="view-content" id="tableView">
+                        <table class="appointments-table">
+                            <thead>
+                                <tr>
+                                    <th>Horário</th>
+                                    <th>Paciente</th>
+                                    <th>Profissional</th>
+                                    <th>Tipo</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentsTableBody">
+                                <tr>
+                                    <td>09:00</td>
+                                    <td>Maria Silva</td>
+                                    <td>Dr. João Santos</td>
+                                    <td>Consulta</td>
+                                    <td><span class="status-badge status-confirmada">Confirmada</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit" title="Editar">
+                                                <i class="fas fa-pen"></i>Editar
+                                            </button>
+                                            <button class="btn-delete" title="Excluir">
+                                                <i class="fas fa-trash"></i>Excluir
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>10:30</td>
+                                    <td>Pedro Costa</td>
+                                    <td>Dra. Ana Lima</td>
+                                    <td>Retorno</td>
+                                    <td><span class="status-badge status-agendada">Agendada</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit" title="Editar">
+                                                <i class="fas fa-pen"></i>Editar
+                                            </button>
+                                            <button class="btn-delete" title="Excluir">
+                                                <i class="fas fa-trash"></i>Excluir
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>14:00</td>
+                                    <td>Julia Oliveira</td>
+                                    <td>Dr. Carlos Mendes</td>
+                                    <td>Avaliação</td>
+                                    <td><span class="status-badge status-realizada">Realizada</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit" title="Editar">
+                                                <i class="fas fa-pen"></i>Editar
+                                            </button>
+                                            <button class="btn-delete" title="Excluir">
+                                                <i class="fas fa-trash"></i>Excluir
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>15:30</td>
+                                    <td>Roberto Alves</td>
+                                    <td>Dr. João Santos</td>
+                                    <td>Exame</td>
+                                    <td><span class="status-badge status-agendada">Agendada</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit" title="Editar">
+                                                <i class="fas fa-pen"></i>Editar
+                                            </button>
+                                            <button class="btn-delete" title="Excluir">
+                                                <i class="fas fa-trash"></i>Excluir
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>16:00</td>
+                                    <td>Ana Silva</td>
+                                    <td>Dr. Paulo Oliveira</td>
+                                    <td>Consulta</td>
+                                    <td><span class="status-badge status-agendada">Agendada</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-edit" title="Editar">
+                                                <i class="fas fa-pen"></i>Editar
+                                            </button>
+                                            <button class="btn-delete" title="Excluir">
+                                                <i class="fas fa-trash"></i>Excluir
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Modal de Detalhes -->
+                    <div id="detailsModal" class="modal hidden">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 id="modalPatientName">Nome do Paciente</h2>
+                                <button class="close-btn" id="closeModal">×</button>
+                            </div>
+                            <div class="modal-body" id="modalBody">
+                                <!-- Conteúdo será preenchido dinamicamente -->
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" id="editBtn">Editar</button>
+                                <button class="btn btn-secondary" id="deleteBtn">Deletar</button>
+                                <button class="btn btn-primary" id="closeModalBtn">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Edição de Agendamento -->
+                    <div id="editAppointmentModal" class="appointment-modal hidden">
+                        <div class="modal-overlay"></div>
+                        <div class="modal-container">
+                            <div class="modal-card">
+                                <h2 class="modal-title">Agendamento de consultas</h2>
+
+                                <form id="appointmentForm" class="appointment-form">
+                                    <!-- Seção Paciente -->
+                                    <div class="form-section">
+                                        <div class="section-header">
+                                            <div class="section-icon-wrapper">
+                                                <i class="fas fa-user section-icon"></i>
+                                                <i class="fas fa-user section-icon-overlay"></i>
+                                            </div>
+                                            <span class="section-title-paciente">Paciente</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-wrapper">
+                                                <input type="text" id="patientSearch" class="form-input search-input"
+                                                    placeholder="Busque por Nome ou CPF dos pacientes..."
+                                                    autocomplete="off">
+                                                <i class="fas fa-search input-icon-right"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Seção Médico -->
+                                    <div class="form-section">
+                                        <div class="section-header">
+                                            <i class="fas fa-calendar section-icon"></i>
+                                            <span class="section-title">Médico</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="doctorSearch" class="form-label required">Médico</label>
+                                            <div class="input-wrapper">
+                                                <input type="text" id="doctorSearch" class="form-input search-input"
+                                                    placeholder="Busque por Nome ou CPF dos pacientes..." required
+                                                    autocomplete="off">
+                                                <i class="fas fa-search input-icon-right"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Data e Horário -->
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="appointmentDate" class="form-label required">Data</label>
+                                            <div class="input-wrapper">
+                                                <input type="date" id="appointmentDate" class="form-input" required>
+                                                <i class="fas fa-calendar-alt input-icon-right"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="appointmentTime" class="form-label required">Horário</label>
+                                            <div class="input-wrapper">
+                                                <input type="time" id="appointmentTime" class="form-input" required>
+                                                <i class="fas fa-clock input-icon-right"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tipo de Atendimento e Prioridade -->
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="serviceType" class="form-label required">Tipo de
+                                                Atendimento</label>
+                                            <div class="select-wrapper">
+                                                <select id="serviceType" class="form-select" required>
+                                                    <option value="Consulta" selected>Consulta</option>
+                                                    <option value="Retorno">Retorno</option>
+                                                    <option value="Avaliação">Avaliação</option>
+                                                    <option value="Exame">Exame</option>
+                                                    <option value="Cirurgia">Cirurgia</option>
+                                                    <option value="Telemedicina">Telemedicina</option>
+                                                </select>
+                                                <i class="fas fa-chevron-down select-icon"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="priority" class="form-label">Prioridade</label>
+                                            <div class="select-wrapper">
+                                                <select id="priority" class="form-select">
+                                                    <option value="Normal" selected>Normal</option>
+                                                    <option value="Urgente">Urgente</option>
+                                                    <option value="Alta">Alta</option>
+                                                    <option value="Baixa">Baixa</option>
+                                                </select>
+                                                <i class="fas fa-chevron-down select-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Convênio -->
+                                    <div class="form-group">
+                                        <label for="insurance" class="form-label">Convênio</label>
+                                        <div class="select-wrapper">
+                                            <select id="insurance" class="form-select">
+                                                <option value="">Selecione...</option>
+                                                <option value="particular">Particular</option>
+                                                <option value="unimed">Unimed</option>
+                                                <option value="amil">Amil</option>
+                                                <option value="sulamerica">SulAmérica</option>
+                                                <option value="bradesco">Bradesco Saúde</option>
+                                            </select>
+                                            <i class="fas fa-chevron-down select-icon"></i>
+                                        </div>
+                                    </div>
+
+                                    <!-- Observações -->
+                                    <div class="form-group">
+                                        <label for="observations" class="form-label">Observações</label>
+                                        <textarea id="observations" class="form-textarea" rows="4"
+                                            placeholder="Adicione observações relevantes sobre o agendamento..."></textarea>
+                                    </div>
+
+                                    <!-- Botões de Ação -->
+                                    <div class="form-actions">
+                                        <button type="button" class="btn btn-cancel"
+                                            id="cancelAppointmentBtn">Cancelar</button>
+                                        <button type="submit" class="btn btn-save">Salvar Agendamento</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal de Novo Agendamento -->
+    <div id="newAppointmentModal" class="appointment-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <h2 class="modal-title">Agendamento de consultas</h2>
+
+                <form id="appointmentForm" class="appointment-form">
+                    <!-- Seção Paciente -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon-wrapper">
+                                <i class="fas fa-user section-icon"></i>
+                                <i class="fas fa-user section-icon-overlay"></i>
+                            </div>
+                            <span class="section-title-paciente">Paciente</span>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <input type="text" id="patientSearch" class="form-input search-input"
+                                    placeholder="Busque por Nome ou CPF dos pacientes..." autocomplete="off">
+                                <i class="fas fa-search input-icon-right"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção Médico -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-calendar section-icon"></i>
+                            <span class="section-title">Médico</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="doctorSearch" class="form-label required">Médico</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="doctorSearch" class="form-input search-input"
+                                    placeholder="Busque por Nome ou CPF dos pacientes..." required autocomplete="off">
+                                <i class="fas fa-search input-icon-right"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data e Horário -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appointmentDate" class="form-label required">Data</label>
+                            <div class="input-wrapper">
+                                <input type="date" id="appointmentDate" class="form-input" required>
+                                <i class="fas fa-calendar-alt input-icon-right"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="appointmentTime" class="form-label required">Horário</label>
+                            <div class="input-wrapper">
+                                <input type="time" id="appointmentTime" class="form-input" required>
+                                <i class="fas fa-clock input-icon-right"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Atendimento e Prioridade -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="serviceType" class="form-label required">Tipo de Atendimento</label>
+                            <div class="select-wrapper">
+                                <select id="serviceType" class="form-select" required>
+                                    <option value="Consulta" selected>Consulta</option>
+                                    <option value="Retorno">Retorno</option>
+                                    <option value="Avaliação">Avaliação</option>
+                                    <option value="Exame">Exame</option>
+                                    <option value="Cirurgia">Cirurgia</option>
+                                    <option value="Telemedicina">Telemedicina</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="priority" class="form-label">Prioridade</label>
+                            <div class="select-wrapper">
+                                <select id="priority" class="form-select">
+                                    <option value="Normal" selected>Normal</option>
+                                    <option value="Urgente">Urgente</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Baixa">Baixa</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Convênio -->
+                    <div class="form-group">
+                        <label for="insurance" class="form-label">Convênio</label>
+                        <div class="select-wrapper">
+                            <select id="insurance" class="form-select">
+                                <option value="">Selecione...</option>
+                                <option value="particular">Particular</option>
+                                <option value="unimed">Unimed</option>
+                                <option value="amil">Amil</option>
+                                <option value="sulamerica">SulAmérica</option>
+                                <option value="bradesco">Bradesco Saúde</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Observações -->
+                    <div class="form-group">
+                        <label for="observations" class="form-label">Observações</label>
+                        <textarea id="observations" class="form-textarea" rows="4"
+                            placeholder="Adicione observações relevantes sobre o agendamento..."></textarea>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel-edit"
+                            id="cancelEditAppointmentBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-confirm">Confirmar Agendamento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+    <script src="../pages/consulta-agendamentos.js"></script>
+</body>
+
+</html>

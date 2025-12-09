@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar uma conta no VidaPlus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/cadastro.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="icon-wrapper">
+            <div class="lock-icon"></div>
+        </div>
+
+        <h1>Criar uma conta no VidaPlus</h1>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <div class="input-wrapper">
+                    <i class="input-icon fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <div class="input-wrapper">
+                    <i class="input-icon fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                    <button type="button" class="eye-icon" id="togglePassword" aria-label="Mostrar senha">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="signupMessage" role="status" aria-live="polite"
+                style="min-height:1.2em; text-align:center; margin-bottom:15px; font-size:14px; font-weight:500;"></div>
+
+            <button type="submit" class="submit-btn">Cadastre-se</button>
+
+            <div class="divider">
+                <span>Ou</span>
+            </div>
+
+            <div class="login-link">
+                Já tem uma conta? <a href="login.html">Faça login</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // filepath: /home/joao/dev/projeto_front_end/src/pages/cadastro.html
+        (function () {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const signupForm = document.getElementById('signupForm');
+            const msg = document.getElementById('signupMessage');
+            const submitBtn = signupForm.querySelector('.submit-btn');
+
+            function show(text, error = false) {
+                msg.textContent = text;
+                msg.style.color = error ? 'crimson' : 'green';
+            }
+
+            togglePassword.addEventListener('click', function (e) {
+                e.preventDefault();
+                const isHidden = passwordInput.type === 'password';
+                passwordInput.type = isHidden ? 'text' : 'password';
+                this.setAttribute('aria-pressed', String(isHidden));
+                const icon = this.querySelector('i');
+                icon.className = isHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
+            });
+
+            signupForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                show('Enviando...');
+
+                const email = document.getElementById('email').value.trim();
+                const senha = passwordInput.value;
+
+                if (!/^\S+@\S+\.\S+$/.test(email)) {
+                    show('E-mail inválido.', true);
+                    submitBtn.disabled = false;
+                    return;
+                }
+                if (senha.length < 6) {
+                    show('Senha deve ter ao menos 6 caracteres.', true);
+                    submitBtn.disabled = false;
+                    return;
+                }
+                try {
+                    // Simulação de cadastro com localStorage (sem backend)
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+                    // Verificar se o email já existe
+                    if (users.find(u => u.email === email)) {
+                        show('Este e-mail já está cadastrado.', true);
+                        submitBtn.disabled = false;
+                        return;
+                    }
+
+                    // Adicionar novo usuário
+                    users.push({
+                        id: Date.now(),
+                        email: email,
+                        senha: senha, // Em produção, use hash!
+                        createdAt: new Date().toISOString()
+                    });
+
+                    localStorage.setItem('users', JSON.stringify(users));
+
+                    // Criar token simulado
+                    const token = btoa(JSON.stringify({ email, id: Date.now() }));
+                    localStorage.setItem('token', token);
+
+                    show('Cadastro realizado com sucesso!');
+                    signupForm.reset();
+
+                    // Redirecionar para dashboard após 1.5 segundos
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+
+                } catch (err) {
+                    show('Erro ao cadastrar: ' + (err.message || err), true);
+                } finally {
+                    submitBtn.disabled = false;
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

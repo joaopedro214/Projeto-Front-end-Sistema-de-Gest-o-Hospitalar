@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Prontuários</title>
+    <link rel="stylesheet" href="../styles/prontuarios.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar será carregada aqui -->
+        <div id="sidebarContainer"></div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input"
+                        placeholder="Buscar pacientes, profissionais, prontuários...">
+                </div>
+
+                <div class="header-right">
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Admin</div>
+                            <div class="profile-role" id="headerUserRole">Admin</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1>Gestão de Prontuários</h1>
+                    <button class="btn btn-primary" id="newRecordBtn">
+                        <i class="fas fa-plus"></i> Novo Prontuário
+                    </button>
+                </div>
+
+                <!-- Seção de Filtros -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="filterSearch">Buscar paciente:</label>
+                        <input type="text" id="filterSearch" class="filter-input" placeholder="Nome ou CPF...">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterBloodType">Tipo Sanguíneo:</label>
+                        <select id="filterBloodType" class="filter-input">
+                            <option value="">Todos os tipos</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterDate">Data da Consulta:</label>
+                        <input type="date" id="filterDate" class="filter-input">
+                    </div>
+
+                    <button class="btn btn-secondary" id="filterBtn">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-times"></i> Limpar
+                    </button>
+                </div>
+
+                <!-- Tabela de Prontuários -->
+                <div class="records-table-container" id="recordsTableContainer">
+                    <table class="records-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Telefone</th>
+                                <th>Última consulta</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTableBody">
+                            <!-- Linhas serão inseridas via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state hidden">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-file-medical"></i>
+                        <i class="fas fa-circle-info empty-badge"></i>
+                    </div>
+                    <h2>Prontuários</h2>
+                    <p class="empty-subtitle">Ainda não há Prontuários registrados.</p>
+                    <p class="empty-hint">Comece cadastrando um.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Cadastro de Prontuário -->
+    <div id="newRecordModal" class="record-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <h2 class="modal-title">Cadastro de Prontuário</h2>
+
+                <form id="recordForm" class="record-form">
+                    <!-- Dados Pessoais -->
+                    <div class="form-section">
+                        <h3 class="form-section-title"><i class="fas fa-user"></i> Dados Pessoais</h3>
+
+                        <div class="form-group">
+                            <label class="form-label required">Nome Completo</label>
+                            <input type="text" class="form-input" name="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">Data de Nascimento</label>
+                            <input type="date" class="form-input" name="birthDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">CPF</label>
+                            <input type="text" class="form-input" id="cpf" name="cpf" placeholder="000.000.000-00"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Telefone</label>
+                            <input type="text" class="form-input" id="phone" name="phone" placeholder="(00) 00000-0000">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">E-mail</label>
+                            <input type="email" class="form-input" name="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Tipo Sanguíneo</label>
+                            <select class="form-select" name="bloodType">
+                                <option value="">Selecione</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Endereço</label>
+                            <input type="text" class="form-input" name="address">
+                        </div>
+                    </div>
+
+                    <!-- Histórico -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Histórico</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Alergias</label>
+                            <textarea class="form-textarea" name="allergies" rows="4"
+                                placeholder="Descreva alergias conhecidas"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Medicamentos em Uso</label>
+                            <textarea class="form-textarea" name="medications" rows="4"
+                                placeholder="Liste medicamentos em uso contínuo"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Histórico</label>
+                            <textarea class="form-textarea" name="medicalHistory" rows="4"
+                                placeholder="Doenças relevantes na família"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Atendimento -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Atendimento</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Queixa Principal</label>
+                            <textarea class="form-textarea" name="mainComplaint" rows="4"
+                                placeholder="Descreva o motivo da consulta"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Diagnóstico</label>
+                            <textarea class="form-textarea" name="diagnosis" rows="4"
+                                placeholder="Diagnóstico ou hipótese diagnóstica"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Prescrição</label>
+                            <textarea class="form-textarea" name="prescription" rows="4"
+                                placeholder="Medicamentos e tratamentos prescritos"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Observações</label>
+                            <textarea class="form-textarea" name="observations" rows="4"
+                                placeholder="Observações adicionais"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Mensagem de Sucesso -->
+                    <div id="successMessage" class="alert alert-success hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Sucesso!</strong>
+                            <p>Prontuário cadastrado com sucesso.</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="cancelBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-save">Salvar Prontuário</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição de Prontuário -->
+    <div id="editRecordModal" class="record-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <h2 class="modal-title">Editar Prontuário</h2>
+
+                <form id="editRecordForm" class="record-form">
+                    <input type="hidden" id="editRecordId" name="recordId">
+
+                    <!-- Dados Pessoais -->
+                    <div class="form-section">
+                        <h3 class="form-section-title"><i class="fas fa-user"></i> Dados Pessoais</h3>
+
+                        <div class="form-group">
+                            <label class="form-label required">Nome Completo</label>
+                            <input type="text" class="form-input" id="editFullName" name="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">Data de Nascimento</label>
+                            <input type="date" class="form-input" id="editBirthDate" name="birthDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">CPF</label>
+                            <input type="text" class="form-input" id="editCpf" name="cpf" placeholder="000.000.000-00"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Telefone</label>
+                            <input type="text" class="form-input" id="editPhone" name="phone"
+                                placeholder="(00) 00000-0000">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">E-mail</label>
+                            <input type="email" class="form-input" id="editEmail" name="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Tipo Sanguíneo</label>
+                            <select class="form-select" id="editBloodType" name="bloodType">
+                                <option value="">Selecione</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Endereço</label>
+                            <input type="text" class="form-input" id="editAddress" name="address">
+                        </div>
+                    </div>
+
+                    <!-- Histórico -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Histórico</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Alergias</label>
+                            <textarea class="form-textarea" id="editAllergies" name="allergies" rows="4"
+                                placeholder="Descreva alergias conhecidas"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Medicamentos em Uso</label>
+                            <textarea class="form-textarea" id="editMedications" name="medications" rows="4"
+                                placeholder="Liste medicamentos em uso contínuo"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Histórico</label>
+                            <textarea class="form-textarea" id="editMedicalHistory" name="medicalHistory" rows="4"
+                                placeholder="Doenças relevantes na família"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Atendimento -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Atendimento</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Queixa Principal</label>
+                            <textarea class="form-textarea" id="editMainComplaint" name="mainComplaint" rows="4"
+                                placeholder="Descreva o motivo da consulta"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Diagnóstico</label>
+                            <textarea class="form-textarea" id="editDiagnosis" name="diagnosis" rows="4"
+                                placeholder="Diagnóstico ou hipótese diagnóstica"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Prescrição</label>
+                            <textarea class="form-textarea" id="editPrescription" name="prescription" rows="4"
+                                placeholder="Medicamentos e tratamentos prescritos"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Observações</label>
+                            <textarea class="form-textarea" id="editObservations" name="observations" rows="4"
+                                placeholder="Observações adicionais"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Mensagem de Sucesso -->
+                    <div id="editSuccessMessage" class="alert alert-success hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Sucesso!</strong>
+                            <p>Prontuário atualizado com sucesso.</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="editCancelBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-save">Salvar Prontuário</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/botoes.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+    <script src="../pages/prontuarios.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+/* Variáveis */
+:root {
+    --primary: #2b479b;
+    --text: #ffffff;
+    --radius: 8px;
+    --padding-vertical: 14px;
+    --padding-horizontal: 28px;
+    --font-size: 20px;
+}
+
+/* Estilo base para todos os botões */
+.btn {
+    display: inline-block;
+    padding: var(--padding-vertical) var(--padding-horizontal);
+    background: var(--primary);
+    color: var(--text);
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: var(--font-size);
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: transform .08s ease, box-shadow .12s ease, filter .08s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Alvo: botões que devem ficar iguais ao print.
+   Note que a classe "+novo" é escapada como .\+novo */
+.register.btn,
+.enter.btn,
+.manage.btn,
+.save.btn,
+.confirm.btn,
+.yes.btn,
+.\+novo.btn {
+    /* largura semelhante ao print: bloco responsivo centralizado */
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    /* ajuste conforme layout */
+    margin: 8px auto;
+    padding: var(--padding-vertical) var(--padding-horizontal);
+    background: var(--primary);
+    color: var(--text);
+    border-radius: var(--radius);
+}
+
+/* Estados */
+.register.btn:hover,
+.enter.btn:hover,
+.manage.btn:hover,
+.save.btn:hover,
+.confirm.btn:hover,
+.yes.btn:hover,
+.\+novo.btn:hover {
+    filter: brightness(0.95);
+}
+
+.register.btn:active,
+.enter.btn:active,
+.manage.btn:active,
+.save.btn:active,
+.confirm.btn:active,
+.yes.btn:active,
+.\+novo.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Acessibilidade: foco visível */
+.btn:focus {
+    outline: 3px solid rgba(43, 71, 155, 0.18);
+    outline-offset: 2px;
+}

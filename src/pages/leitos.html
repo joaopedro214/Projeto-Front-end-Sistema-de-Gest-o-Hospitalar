@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Leitos</title>
+    <link rel="stylesheet" href="../styles/leitos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar será carregada aqui -->
+        <div id="sidebarContainer"></div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input"
+                        placeholder="Buscar pacientes, profissionais, prontuários...">
+                </div>
+
+                <div class="header-right">
+                    <!-- Seletor de Role -->
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Admin</div>
+                            <div class="profile-role" id="headerUserRole">Admin</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1>Gestão de Leitos</h1>
+                    <button class="btn btn-primary" id="newBedBtn">
+                        <i class="fas fa-plus"></i> Novo Leito
+                    </button>
+                </div>
+
+                <div class="beds-grid" id="bedsGrid">
+                    <!-- Cards serão inseridos aqui via JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Cadastro de Leito -->
+    <div id="newBedModal" class="bed-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <h2 class="modal-title">Cadastro de Leito</h2>
+
+                <form id="newBedForm" class="bed-form">
+                    <!-- Informações do Leito -->
+                    <div class="form-section">
+                        <h3 class="form-section-title"><i class="fas fa-bed"></i> Informações do Leito</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newBedNumber" class="form-label">Número do Leito</label>
+                                <input type="text" id="newBedNumber" name="bedNumber" class="form-input" required
+                                    placeholder="Ex: 102">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="newBedType" class="form-label">Tipo</label>
+                                <div class="select-wrapper">
+                                    <select id="newBedType" name="bedType" class="form-select" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="UTI">UTI</option>
+                                        <option value="Enfermaria">Enfermaria</option>
+                                        <option value="Leito normal">Leito normal</option>
+                                        <option value="Isolamento">Isolamento</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="newPatientName" class="form-label">Paciente</label>
+                                <input type="text" id="newPatientName" name="patientName" class="form-input"
+                                    placeholder="Nome do paciente (deixe vazio se disponível)">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newStatus" class="form-label">Status</label>
+                                <div class="select-wrapper">
+                                    <select id="newStatus" name="status" class="form-select" required>
+                                        <option value="disponivel">Disponível</option>
+                                        <option value="ocupado">Ocupado</option>
+                                        <option value="manutencao">Manutenção</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensagem de Sucesso -->
+                    <div id="newSuccessMessage" class="alert alert-success hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Sucesso!</strong>
+                            <p>Leito cadastrado com sucesso.</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="newCancelBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-confirm">Cadastrar Leito</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição de Leito -->
+    <div id="editBedModal" class="bed-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <h2 class="modal-title">Editar Leito</h2>
+
+                <form id="editBedForm" class="bed-form">
+                    <input type="hidden" id="editBedId" name="bedId">
+
+                    <!-- Informações do Leito -->
+                    <div class="form-section">
+                        <h3 class="form-section-title"><i class="fas fa-bed"></i> Informações do Leito</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editBedNumber" class="form-label">Número do Leito</label>
+                                <input type="text" id="editBedNumber" name="bedNumber" class="form-input" required
+                                    placeholder="Ex: 102" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editBedType" class="form-label">Tipo</label>
+                                <div class="select-wrapper">
+                                    <select id="editBedType" name="bedType" class="form-select" required>
+                                        <option value="UTI">UTI</option>
+                                        <option value="Enfermaria">Enfermaria</option>
+                                        <option value="Leito normal">Leito normal</option>
+                                        <option value="Isolamento">Isolamento</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="editPatientName" class="form-label">Paciente</label>
+                                <input type="text" id="editPatientName" name="patientName" class="form-input"
+                                    placeholder="Nome do paciente (deixe vazio se disponível)">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editStatus" class="form-label">Status</label>
+                                <div class="select-wrapper">
+                                    <select id="editStatus" name="status" class="form-select" required>
+                                        <option value="disponivel">Disponível</option>
+                                        <option value="ocupado">Ocupado</option>
+                                        <option value="manutencao">Manutenção</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensagem de Sucesso -->
+                    <div id="editSuccessMessage" class="alert alert-success hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Sucesso!</strong>
+                            <p>Leito atualizado com sucesso.</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="editCancelBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-confirm">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Scripts em ordem de dependência -->
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/botoes.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+    <script src="../pages/leitos.js"></script>
+</body>
+
+</html>

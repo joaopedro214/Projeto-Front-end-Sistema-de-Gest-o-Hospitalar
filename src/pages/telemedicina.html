@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemedicina</title>
+    <link rel="stylesheet" href="../styles/telemedicina.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar será carregada aqui -->
+        <div id="sidebarContainer"></div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input"
+                        placeholder="Buscar pacientes, profissionais, prontuários...">
+                </div>
+
+                <div class="header-right">
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Admin</div>
+                            <div class="profile-role" id="headerUserRole">Admin</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1>Telemedicina</h1>
+                    <button class="btn btn-primary" id="newTeleconsultationBtn">
+                        <i class="fas fa-plus"></i> Nova Teleconsulta
+                    </button>
+                </div>
+
+                <div class="teleconsultations-grid" id="teleconsultationsGrid">
+                    <!-- Cards serão inseridos aqui via JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Edição de Teleconsulta -->
+    <div id="editTeleconsultationModal" class="teleconsultation-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <h2 class="modal-title">Edição de teleconsulta</h2>
+
+                <form id="editTeleconsultationForm" class="teleconsultation-form">
+                    <input type="hidden" id="editTeleconsultationId" name="teleconsultationId">
+
+                    <!-- Seção Paciente -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-user section-icon"></i>
+                            <span class="section-title">Paciente</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPatientName" class="form-label required">Nome Completo</label>
+                            <input type="text" id="editPatientName" name="patientName" class="form-input" required
+                                placeholder="Nome Completo">
+                        </div>
+                    </div>
+
+                    <!-- Seção Médico -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-user-doctor section-icon"></i>
+                            <span class="section-title">Médico</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDoctorName" class="form-label required">Nome Completo</label>
+                            <input type="text" id="editDoctorName" name="doctorName" class="form-input" required
+                                placeholder="Nome Completo">
+                        </div>
+                    </div>
+
+                    <!-- Data e Horário -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editDate" class="form-label required">Data</label>
+                            <div class="input-wrapper">
+                                <input type="date" id="editDate" name="date" class="form-input" required
+                                    placeholder="dd/mm/aaaa">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editTime" class="form-label required">Horário</label>
+                            <div class="input-wrapper">
+                                <input type="time" id="editTime" name="time" class="form-input" required
+                                    placeholder="--:--">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Atendimento e Prioridade -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editServiceType" class="form-label required">Tipo de Atendimento</label>
+                            <div class="select-wrapper">
+                                <select id="editServiceType" name="serviceType" class="form-select" required>
+                                    <option value="Consulta">Consulta</option>
+                                    <option value="Retorno">Retorno</option>
+                                    <option value="Avaliação">Avaliação</option>
+                                    <option value="Exame">Exame</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editPriority" class="form-label">Prioridade</label>
+                            <div class="select-wrapper">
+                                <select id="editPriority" name="priority" class="form-select">
+                                    <option value="Normal">Normal</option>
+                                    <option value="Urgente">Urgente</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Baixa">Baixa</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Convênio -->
+                    <div class="form-group">
+                        <label for="editInsurance" class="form-label">Convênio</label>
+                        <div class="select-wrapper">
+                            <select id="editInsurance" name="insurance" class="form-select">
+                                <option value="">Selecione...</option>
+                                <option value="particular">Particular</option>
+                                <option value="unimed">Unimed</option>
+                                <option value="amil">Amil</option>
+                                <option value="sulamerica">SulAmérica</option>
+                                <option value="bradesco">Bradesco Saúde</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Observações -->
+                    <div class="form-group">
+                        <label for="editObservations" class="form-label">Observações</label>
+                        <textarea id="editObservations" name="observations" class="form-textarea" rows="4"
+                            placeholder="Adicione observações relevantes sobre o agendamento..."></textarea>
+                    </div>
+
+                    <!-- Mensagem de Sucesso -->
+                    <div id="editSuccessMessage" class="alert alert-success hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Sucesso!</strong>
+                            <p>Teleconsulta atualizada com sucesso.</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="editCancelBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-save">Confirmar Teleconsulta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Nova Teleconsulta -->
+    <div id="newTeleconsultationModal" class="teleconsultation-modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <h2 class="modal-title">Agendamento de teleconsulta</h2>
+
+                <form id="newTeleconsultationForm" class="teleconsultation-form">
+                    <!-- Seção Paciente -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-user section-icon"></i>
+                            <span class="section-title">Paciente</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientName" class="form-label required">Nome Completo</label>
+                            <input type="text" id="patientName" name="patientName" class="form-input" required
+                                placeholder="Nome Completo">
+                        </div>
+                    </div>
+
+                    <!-- Seção Médico -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-user-doctor section-icon"></i>
+                            <span class="section-title">Médico</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="doctorName" class="form-label required">Nome Completo</label>
+                            <input type="text" id="doctorName" name="doctorName" class="form-input" required
+                                placeholder="Nome Completo">
+                        </div>
+                    </div>
+
+                    <!-- Data e Horário -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date" class="form-label required">Data</label>
+                            <div class="input-wrapper">
+                                <input type="date" id="date" name="date" class="form-input" required
+                                    placeholder="dd/mm/aaaa">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="time" class="form-label required">Horário</label>
+                            <div class="input-wrapper">
+                                <input type="time" id="time" name="time" class="form-input" required
+                                    placeholder="--:--">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Atendimento e Prioridade -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="serviceType" class="form-label required">Tipo de Atendimento</label>
+                            <div class="select-wrapper">
+                                <select id="serviceType" name="serviceType" class="form-select" required>
+                                    <option value="Consulta">Consulta</option>
+                                    <option value="Retorno">Retorno</option>
+                                    <option value="Avaliação">Avaliação</option>
+                                    <option value="Exame">Exame</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="priority" class="form-label">Prioridade</label>
+                            <div class="select-wrapper">
+                                <select id="priority" name="priority" class="form-select">
+                                    <option value="Normal">Normal</option>
+                                    <option value="Urgente">Urgente</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Baixa">Baixa</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Convênio -->
+                    <div class="form-group">
+                        <label for="insurance" class="form-label">Convênio</label>
+                        <div class="select-wrapper">
+                            <select id="insurance" name="insurance" class="form-select">
+                                <option value="">Selecione...</option>
+                                <option value="particular">Particular</option>
+                                <option value="unimed">Unimed</option>
+                                <option value="amil">Amil</option>
+                                <option value="sulamerica">SulAmérica</option>
+                                <option value="bradesco">Bradesco Saúde</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Observações -->
+                    <div class="form-group">
+                        <label for="observations" class="form-label">Observações</label>
+                        <textarea id="observations" name="observations" class="form-textarea" rows="4"
+                            placeholder="Adicione observações relevantes sobre o agendamento..."></textarea>
+                    </div>
+
+                    <!-- Mensagem de Sucesso -->
+                    <div id="successMessage" class="alert alert-success hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Sucesso!</strong>
+                            <p>Teleconsulta criada com sucesso.</p>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" id="cancelBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-save">Confirmar Teleconsulta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/botoes.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+    <script src="../pages/telemedicina.js"></script>
+</body>
+
+</html>

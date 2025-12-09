@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Teleconsultas - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/telemedicina.css">
+    <link rel="stylesheet" href="../styles/paciente-teleconsulta.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div id="sidebarContainer"></div>
+
+        <main class="main-content" id="mainContent">
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input" placeholder="Buscar teleconsultas...">
+                </div>
+                <div class="header-right">
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Paciente</div>
+                            <div class="profile-role" id="headerUserRole">Paciente</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">P</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1>Minhas Teleconsultas</h1>
+                    <button class="btn-primary-patient" id="btnNewTeleconsultation">
+                        <i class="fas fa-plus"></i>
+                        Solicitar Teleconsulta
+                    </button>
+                </div>
+
+                <!-- Consulta Ativa -->
+                <div class="active-session" id="activeSession" style="display: none;">
+                    <div class="session-header">
+                        <h3><i class="fas fa-video"></i> Consulta em Andamento</h3>
+                        <button class="btn-danger" onclick="endSession()">
+                            <i class="fas fa-phone-slash"></i>
+                            Encerrar
+                        </button>
+                    </div>
+                    <div class="video-container">
+                        <div class="video-main">
+                            <video id="remoteVideo" autoplay></video>
+                            <div class="video-label">Dr. João Silva</div>
+                        </div>
+                        <div class="video-small">
+                            <video id="localVideo" autoplay muted></video>
+                            <div class="video-label">Você</div>
+                        </div>
+                    </div>
+                    <div class="session-controls">
+                        <button class="control-btn" id="toggleMic">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="control-btn" id="toggleCamera">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="control-btn" id="shareScreen">
+                            <i class="fas fa-desktop"></i>
+                        </button>
+                        <button class="control-btn" id="openChat">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                    </div>
+                    <div class="session-timer">
+                        Duração: <span id="timer">00:00</span>
+                    </div>
+                </div>
+
+                <!-- Próxima Consulta -->
+                <div class="next-consultation">
+                    <h2><i class="fas fa-clock"></i> Próxima Teleconsulta Agendada</h2>
+                    <div class="consultation-card upcoming">
+                        <div class="consultation-info">
+                            <div class="doctor-avatar">JS</div>
+                            <div class="consultation-details">
+                                <h3>Dr. João Silva</h3>
+                                <p class="specialty">Cardiologia</p>
+                                <p class="datetime">
+                                    <i class="fas fa-calendar"></i>
+                                    22 de Dezembro de 2025 às 10:00
+                                </p>
+                                <p class="reason">Retorno - Acompanhamento cardiológico</p>
+                            </div>
+                        </div>
+                        <div class="consultation-actions">
+                            <button class="btn-primary-patient" onclick="joinSession()">
+                                <i class="fas fa-video"></i>
+                                Entrar na Consulta
+                            </button>
+                            <button class="btn-secondary-patient">
+                                <i class="fas fa-calendar-plus"></i>
+                                Adicionar ao Calendário
+                            </button>
+                            <button class="btn-danger">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico -->
+                <div class="history-section">
+                    <h2><i class="fas fa-history"></i> Histórico de Teleconsultas</h2>
+
+                    <div class="consultation-card completed">
+                        <div class="consultation-info">
+                            <div class="doctor-avatar">JS</div>
+                            <div class="consultation-details">
+                                <h3>Dr. João Silva</h3>
+                                <p class="specialty">Cardiologia</p>
+                                <p class="datetime">
+                                    <i class="fas fa-calendar"></i>
+                                    18 de Novembro de 2025 às 15:00
+                                </p>
+                                <p class="duration">
+                                    <i class="fas fa-clock"></i>
+                                    Duração: 25 minutos
+                                </p>
+                                <span class="status-badge completed">
+                                    <i class="fas fa-check-circle"></i>
+                                    Realizada
+                                </span>
+                            </div>
+                        </div>
+                        <div class="consultation-actions">
+                            <button class="btn-primary-patient" onclick="viewRecord()">
+                                <i class="fas fa-file-medical"></i>
+                                Ver Prontuário
+                            </button>
+                            <button class="btn-secondary-patient">
+                                <i class="fas fa-download"></i>
+                                Baixar Receita
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="consultation-card completed">
+                        <div class="consultation-info">
+                            <div class="doctor-avatar">AC</div>
+                            <div class="consultation-details">
+                                <h3>Dra. Ana Costa</h3>
+                                <p class="specialty">Clínico Geral</p>
+                                <p class="datetime">
+                                    <i class="fas fa-calendar"></i>
+                                    05 de Outubro de 2025 às 14:30
+                                </p>
+                                <p class="duration">
+                                    <i class="fas fa-clock"></i>
+                                    Duração: 20 minutos
+                                </p>
+                                <span class="status-badge completed">
+                                    <i class="fas fa-check-circle"></i>
+                                    Realizada
+                                </span>
+                            </div>
+                        </div>
+                        <div class="consultation-actions">
+                            <button class="btn-primary-patient" onclick="viewRecord()">
+                                <i class="fas fa-file-medical"></i>
+                                Ver Prontuário
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="consultation-card cancelled">
+                        <div class="consultation-info">
+                            <div class="doctor-avatar">CM</div>
+                            <div class="consultation-details">
+                                <h3>Dr. Carlos Mendes</h3>
+                                <p class="specialty">Oftalmologia</p>
+                                <p class="datetime">
+                                    <i class="fas fa-calendar"></i>
+                                    25 de Setembro de 2025 às 11:00
+                                </p>
+                                <span class="status-badge cancelled">
+                                    <i class="fas fa-times-circle"></i>
+                                    Cancelada
+                                </span>
+                                <p class="cancel-reason">Cancelada pelo paciente</p>
+                            </div>
+                        </div>
+                        <div class="consultation-actions">
+                            <button class="btn-primary-patient">
+                                <i class="fas fa-redo"></i>
+                                Reagendar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações Úteis -->
+                <div class="info-section">
+                    <h2><i class="fas fa-info-circle"></i> Como Funciona a Teleconsulta</h2>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <i class="fas fa-calendar-check"></i>
+                            <h4>1. Agende</h4>
+                            <p>Escolha o médico, data e horário disponível</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-bell"></i>
+                            <h4>2. Prepare-se</h4>
+                            <p>Você receberá lembretes antes da consulta</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-video"></i>
+                            <h4>3. Entre na Sala</h4>
+                            <p>Clique em "Entrar" 5 minutos antes</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-file-prescription"></i>
+                            <h4>4. Receba o Atendimento</h4>
+                            <p>Receita e prontuário ficam disponíveis após a consulta</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requisitos Técnicos -->
+                <div class="requirements-section">
+                    <h3><i class="fas fa-laptop-medical"></i> Requisitos Técnicos</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Conexão de internet estável (mínimo 5 Mbps)</li>
+                        <li><i class="fas fa-check"></i> Câmera e microfone funcionando</li>
+                        <li><i class="fas fa-check"></i> Navegador atualizado (Chrome, Firefox, Safari ou Edge)</li>
+                        <li><i class="fas fa-check"></i> Ambiente silencioso e bem iluminado</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Modal Solicitar Teleconsulta -->
+    <div class="modal" id="newTeleconsultationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Solicitar Teleconsulta</h2>
+                <div class="close-modal" id="closeNewTeleconsultation"></div>
+            </div>
+            <form id="newTeleconsultationForm">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="specialty">Especialidade *</label>
+                        <select id="specialty" required>
+                            <option value="">Selecione...</option>
+                            <option value="cardiologia">Cardiologia</option>
+                            <option value="clinico-geral">Clínico Geral</option>
+                            <option value="dermatologia">Dermatologia</option>
+                            <option value="psicologia">Psicologia</option>
+                            <option value="nutricao">Nutrição</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="doctor">Médico *</label>
+                        <select id="doctor" required>
+                            <option value="">Selecione uma especialidade primeiro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="consultationDate">Data *</label>
+                        <input type="date" id="consultationDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="consultationTime">Horário *</label>
+                        <select id="consultationTime" required>
+                            <option value="">Selecione...</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="reason">Motivo da Teleconsulta *</label>
+                        <textarea id="reason" rows="3" required
+                            placeholder="Descreva brevemente o motivo da consulta"></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>
+                            <input type="checkbox" required>
+                            Li e concordo com os <a href="#">termos de uso</a> da teleconsulta
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelNewTeleconsultation">Cancelar</button>
+                    <button type="submit" class="btn-primary">Solicitar Teleconsulta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+    <script>
+        // Modal
+        const modal = document.getElementById('newTeleconsultationModal');
+        const btnNew = document.getElementById('btnNewTeleconsultation');
+        const closeBtn = document.getElementById('closeNewTeleconsultation');
+        const cancelBtn = document.getElementById('cancelNewTeleconsultation');
+        const overlay = document.getElementById('overlay');
+
+        btnNew.addEventListener('click', () => {
+            modal.classList.add('active');
+            overlay.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Médicos por especialidade
+        const doctorsBySpecialty = {
+            'cardiologia': ['Dr. João Silva', 'Dra. Maria Santos'],
+            'clinico-geral': ['Dra. Ana Costa', 'Dr. Pedro Oliveira'],
+            'dermatologia': ['Dra. Laura Martins'],
+            'psicologia': ['Dr. Rafael Lima', 'Dra. Beatriz Costa'],
+            'nutricao': ['Dra. Camila Souza']
+        };
+
+        document.getElementById('specialty').addEventListener('change', (e) => {
+            const doctorSelect = document.getElementById('doctor');
+            const specialty = e.target.value;
+
+            doctorSelect.innerHTML = '<option value="">Selecione...</option>';
+
+            if (specialty && doctorsBySpecialty[specialty]) {
+                doctorsBySpecialty[specialty].forEach(doctor => {
+                    const option = document.createElement('option');
+                    option.value = doctor;
+                    option.textContent = doctor;
+                    doctorSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Enviar formulário
+        document.getElementById('newTeleconsultationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Teleconsulta solicitada com sucesso! Aguarde a confirmação do médico.');
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+            e.target.reset();
+        });
+
+        // Data mínima
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('consultationDate').setAttribute('min', today);
+
+        // Entrar na sessão
+        function joinSession() {
+            const activeSession = document.getElementById('activeSession');
+            activeSession.style.display = 'block';
+
+            // Simular timer
+            let seconds = 0;
+            const timerEl = document.getElementById('timer');
+            setInterval(() => {
+                seconds++;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }, 1000);
+
+            // Scroll para sessão ativa
+            activeSession.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Encerrar sessão
+        function endSession() {
+            if (confirm('Deseja realmente encerrar a consulta?')) {
+                document.getElementById('activeSession').style.display = 'none';
+                alert('Consulta encerrada. O prontuário estará disponível em breve.');
+            }
+        }
+
+        // Controles
+        let micOn = true;
+        let cameraOn = true;
+
+        document.getElementById('toggleMic').addEventListener('click', function () {
+            micOn = !micOn;
+            this.classList.toggle('muted');
+            this.innerHTML = micOn ? '<i class="fas fa-microphone"></i>' : '<i class="fas fa-microphone-slash"></i>';
+        });
+
+        document.getElementById('toggleCamera').addEventListener('click', function () {
+            cameraOn = !cameraOn;
+            this.classList.toggle('muted');
+            this.innerHTML = cameraOn ? '<i class="fas fa-video"></i>' : '<i class="fas fa-video-slash"></i>';
+        });
+
+        document.getElementById('shareScreen').addEventListener('click', function () {
+            alert('Compartilhamento de tela iniciado');
+        });
+
+        document.getElementById('openChat').addEventListener('click', function () {
+            alert('Chat aberto');
+        });
+
+        // Ver prontuário
+        function viewRecord() {
+            window.location.href = 'paciente-historico.html';
+        }
+    </script>
+</body>
+
+</html>

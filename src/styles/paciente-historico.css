@@ -1,0 +1,280 @@
+/* Estilos específicos para paciente-historico.html */
+
+/* Resumo de Saúde */
+.health-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+}
+
+.summary-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.summary-card i {
+    font-size: 32px;
+    color: #2b479b;
+}
+
+.summary-card .label {
+    display: block;
+    font-size: 12px;
+    color: #86868b;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.summary-card .value {
+    display: block;
+    font-size: 18px;
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+/* Seção de Registros */
+.records-section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+.records-section h2 {
+    font-size: 20px;
+    color: #1d1d1f;
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.records-section h2 i {
+    color: #2b479b;
+}
+
+/* Item de Registro */
+.record-item {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border-left: 4px solid #2b479b;
+}
+
+.record-item:last-child {
+    margin-bottom: 0;
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.record-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+.record-date i {
+    color: #2b479b;
+}
+
+.record-doctor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #515154;
+    font-size: 14px;
+}
+
+.record-doctor i {
+    color: #86868b;
+}
+
+.record-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.record-field {
+    font-size: 14px;
+}
+
+.record-field strong {
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+.record-field p {
+    margin-top: 4px;
+    color: #515154;
+    line-height: 1.5;
+}
+
+/* Seção de Exames */
+.exams-section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.exams-section h2 {
+    font-size: 20px;
+    color: #1d1d1f;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.exams-section h2 i {
+    color: #2b479b;
+}
+
+.exams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.exam-card {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    border: 1px solid #e5e7eb;
+}
+
+.exam-card:hover {
+    background: white;
+    border-color: #2b479b;
+    box-shadow: 0 2px 8px rgba(43, 71, 155, 0.1);
+}
+
+.exam-icon {
+    font-size: 32px;
+    color: #dc2626;
+}
+
+.exam-info {
+    flex: 1;
+}
+
+.exam-info h4 {
+    font-size: 14px;
+    color: #1d1d1f;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.exam-date {
+    font-size: 12px;
+    color: #86868b;
+}
+
+.btn-download {
+    background: #2b479b;
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-download:hover {
+    background: #1e3470;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(43, 71, 155, 0.3);
+}
+
+.btn-download:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(43, 71, 155, 0.2);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    #sidebarContainer {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1001;
+    }
+
+    #sidebarContainer.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .content-wrapper {
+        padding: 20px 15px;
+    }
+
+    .health-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .exams-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .record-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    #sidebarContainer {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .content-wrapper {
+        padding: 15px 10px;
+    }
+}

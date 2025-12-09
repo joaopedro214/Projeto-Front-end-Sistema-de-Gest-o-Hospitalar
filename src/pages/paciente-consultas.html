@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Consultas - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/consulta-agendamentos.css">
+    <link rel="stylesheet" href="../styles/paciente-consultas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div id="sidebarContainer"></div>
+
+        <main class="main-content" id="mainContent">
+            <header class="header">
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-container">
+                    <i class="search-icon fas fa-magnifying-glass"></i>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Buscar consultas...">
+                </div>
+                <div class="header-right">
+                    <div class="role-selector">
+                        <select id="roleSelect" class="role-select">
+                            <option value="admin">Administrador</option>
+                            <option value="profissional">Profissional de Saúde</option>
+                            <option value="paciente">Paciente</option>
+                        </select>
+                    </div>
+                    <div class="notification-badge">
+                        <i class="notification-icon fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <div class="profile-name" id="headerUserName">Paciente</div>
+                            <div class="profile-role" id="headerUserRole">Paciente</div>
+                        </div>
+                        <div class="profile-avatar" id="headerUserAvatar">P</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1>Minhas Consultas</h1>
+                    <button class="btn-primary" id="btnNewAppointment">
+                        <i class="fas fa-plus"></i>
+                        Agendar Nova Consulta
+                    </button>
+                </div>
+
+                <!-- Filtros -->
+                <div class="filters-container">
+                    <button class="filter-btn active" data-status="all">
+                        <i class="fas fa-list"></i>
+                        Todas
+                    </button>
+                    <button class="filter-btn" data-status="agendada">
+                        <i class="fas fa-clock"></i>
+                        Agendadas
+                    </button>
+                    <button class="filter-btn" data-status="confirmada">
+                        <i class="fas fa-check-circle"></i>
+                        Confirmadas
+                    </button>
+                    <button class="filter-btn" data-status="concluida">
+                        <i class="fas fa-calendar-check"></i>
+                        Realizadas
+                    </button>
+                    <button class="filter-btn" data-status="cancelada">
+                        <i class="fas fa-times-circle"></i>
+                        Canceladas
+                    </button>
+                </div>
+
+                <!-- Lista de Consultas -->
+                <div class="appointments-list" id="appointmentsList">
+                    <!-- Consulta 1 - Próxima -->
+                    <div class="appointment-card upcoming" data-status="confirmada">
+                        <div class="appointment-header">
+                            <div class="appointment-date">
+                                <i class="fas fa-calendar"></i>
+                                <div>
+                                    <strong>20 de Dezembro de 2025</strong>
+                                    <span>14:30</span>
+                                </div>
+                            </div>
+                            <span class="status-badge confirmada">
+                                <i class="fas fa-check-circle"></i>
+                                Confirmada
+                            </span>
+                        </div>
+                        <div class="appointment-body">
+                            <div class="doctor-info">
+                                <i class="fas fa-user-md"></i>
+                                <div>
+                                    <strong>Dr. João Silva</strong>
+                                    <span>Cardiologia</span>
+                                </div>
+                            </div>
+                            <div class="appointment-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Consultório 205 - 2º Andar</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-notes-medical"></i>
+                                    <span>Consulta de retorno - Acompanhamento cardiológico</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="appointment-actions">
+                            <button class="btn-edit" onclick="editAppointment(this)">
+                                <i class="fas fa-edit"></i>
+                                Editar
+                            </button>
+                            <button class="btn-secondary">
+                                <i class="fas fa-calendar-plus"></i>
+                                Adicionar ao Calendário
+                            </button>
+                            <button class="btn-danger" onclick="cancelAppointment(this)">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Consulta 2 - Agendada -->
+                    <div class="appointment-card" data-status="agendada">
+                        <div class="appointment-header">
+                            <div class="appointment-date">
+                                <i class="fas fa-calendar"></i>
+                                <div>
+                                    <strong>15 de Janeiro de 2026</strong>
+                                    <span>10:00</span>
+                                </div>
+                            </div>
+                            <span class="status-badge agendada">
+                                <i class="fas fa-clock"></i>
+                                Agendada
+                            </span>
+                        </div>
+                        <div class="appointment-body">
+                            <div class="doctor-info">
+                                <i class="fas fa-user-md"></i>
+                                <div>
+                                    <strong>Dra. Ana Costa</strong>
+                                    <span>Clínico Geral</span>
+                                </div>
+                            </div>
+                            <div class="appointment-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Consultório 101 - Térreo</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-notes-medical"></i>
+                                    <span>Consulta de rotina - Check-up anual</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="appointment-actions">
+                            <button class="btn-edit" onclick="editAppointment(this)">
+                                <i class="fas fa-edit"></i>
+                                Editar
+                            </button>
+                            <button class="btn-primary" onclick="confirmAppointment(this)">
+                                <i class="fas fa-check"></i>
+                                Confirmar Presença
+                            </button>
+                            <button class="btn-danger" onclick="cancelAppointment(this)">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Consulta 3 - Realizada -->
+                    <div class="appointment-card completed" data-status="concluida">
+                        <div class="appointment-header">
+                            <div class="appointment-date">
+                                <i class="fas fa-calendar"></i>
+                                <div>
+                                    <strong>15 de Novembro de 2025</strong>
+                                    <span>14:30</span>
+                                </div>
+                            </div>
+                            <span class="status-badge concluida">
+                                <i class="fas fa-calendar-check"></i>
+                                Realizada
+                            </span>
+                        </div>
+                        <div class="appointment-body">
+                            <div class="doctor-info">
+                                <i class="fas fa-user-md"></i>
+                                <div>
+                                    <strong>Dr. João Silva</strong>
+                                    <span>Cardiologia</span>
+                                </div>
+                            </div>
+                            <div class="appointment-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-notes-medical"></i>
+                                    <span>Consulta realizada - Prontuário disponível</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="appointment-actions">
+                            <button class="btn-secondary" onclick="viewRecord()">
+                                <i class="fas fa-file-medical"></i>
+                                Ver Prontuário
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Consulta 4 - Cancelada -->
+                    <div class="appointment-card cancelled" data-status="cancelada">
+                        <div class="appointment-header">
+                            <div class="appointment-date">
+                                <i class="fas fa-calendar"></i>
+                                <div>
+                                    <strong>05 de Novembro de 2025</strong>
+                                    <span>09:00</span>
+                                </div>
+                            </div>
+                            <span class="status-badge cancelada">
+                                <i class="fas fa-times-circle"></i>
+                                Cancelada
+                            </span>
+                        </div>
+                        <div class="appointment-body">
+                            <div class="doctor-info">
+                                <i class="fas fa-user-md"></i>
+                                <div>
+                                    <strong>Dr. Carlos Mendes</strong>
+                                    <span>Oftalmologia</span>
+                                </div>
+                            </div>
+                            <div class="appointment-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Cancelada pelo paciente em 03/11/2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="appointment-actions">
+                            <button class="btn-primary" onclick="rescheduleAppointment()">
+                                <i class="fas fa-redo"></i>
+                                Reagendar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Modal Editar Consulta -->
+    <div class="modal" id="editAppointmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Consulta</h2>
+                <div class="close-modal" id="closeEditAppointment"></div>
+            </div>
+            <form id="editAppointmentForm">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="editSpecialty">Especialidade *</label>
+                        <select id="editSpecialty" required>
+                            <option value="">Selecione...</option>
+                            <option value="cardiologia">Cardiologia</option>
+                            <option value="clinico-geral">Clínico Geral</option>
+                            <option value="dermatologia">Dermatologia</option>
+                            <option value="oftalmologia">Oftalmologia</option>
+                            <option value="ortopedia">Ortopedia</option>
+                            <option value="pediatria">Pediatria</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="editDoctor">Médico *</label>
+                        <select id="editDoctor" required>
+                            <option value="">Selecione uma especialidade primeiro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAppointmentDate">Data *</label>
+                        <input type="date" id="editAppointmentDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAppointmentTime">Horário *</label>
+                        <select id="editAppointmentTime" required>
+                            <option value="">Selecione...</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="editReason">Motivo da Consulta *</label>
+                        <textarea id="editReason" rows="3" required
+                            placeholder="Descreva brevemente o motivo da consulta"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelEditAppointment">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Agendar Nova Consulta -->
+    <div class="modal" id="newAppointmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Agendar Nova Consulta</h2>
+                <div class="close-modal" id="closeNewAppointment"></div>
+            </div>
+            <form id="newAppointmentForm">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="specialty">Especialidade *</label>
+                        <select id="specialty" required>
+                            <option value="">Selecione...</option>
+                            <option value="cardiologia">Cardiologia</option>
+                            <option value="clinico-geral">Clínico Geral</option>
+                            <option value="dermatologia">Dermatologia</option>
+                            <option value="oftalmologia">Oftalmologia</option>
+                            <option value="ortopedia">Ortopedia</option>
+                            <option value="pediatria">Pediatria</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="doctor">Médico *</label>
+                        <select id="doctor" required>
+                            <option value="">Selecione uma especialidade primeiro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointmentDate">Data *</label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointmentTime">Horário *</label>
+                        <select id="appointmentTime" required>
+                            <option value="">Selecione...</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="reason">Motivo da Consulta *</label>
+                        <textarea id="reason" rows="3" required
+                            placeholder="Descreva brevemente o motivo da consulta"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelNewAppointment">Cancelar</button>
+                    <button type="submit" class="btn-primary">Agendar Consulta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../components/roles.js"></script>
+    <script src="../components/navigation.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/role-selector.js"></script>
+    <script>
+        // Filtros de status
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const appointmentCards = document.querySelectorAll('.appointment-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const status = btn.dataset.status;
+
+                appointmentCards.forEach(card => {
+                    if (status === 'all' || card.dataset.status === status) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Busca
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+
+            appointmentCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        // Modal Nova Consulta
+        const newAppointmentModal = document.getElementById('newAppointmentModal');
+        const btnNewAppointment = document.getElementById('btnNewAppointment');
+        const closeNewAppointment = document.getElementById('closeNewAppointment');
+        const cancelNewAppointment = document.getElementById('cancelNewAppointment');
+        const overlay = document.getElementById('overlay');
+
+        // Modal Editar Consulta
+        const editAppointmentModal = document.getElementById('editAppointmentModal');
+        const closeEditAppointment = document.getElementById('closeEditAppointment');
+        const cancelEditAppointment = document.getElementById('cancelEditAppointment');
+        let currentEditCard = null;
+
+        btnNewAppointment.addEventListener('click', () => {
+            newAppointmentModal.classList.add('active');
+            overlay.classList.add('active');
+        });
+
+        closeNewAppointment.addEventListener('click', () => {
+            newAppointmentModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        cancelNewAppointment.addEventListener('click', () => {
+            newAppointmentModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            newAppointmentModal.classList.remove('active');
+            editAppointmentModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        closeEditAppointment.addEventListener('click', () => {
+            editAppointmentModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        cancelEditAppointment.addEventListener('click', () => {
+            editAppointmentModal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Médicos por especialidade
+        const doctorsBySpecialty = {
+            'cardiologia': ['Dr. João Silva', 'Dra. Maria Santos'],
+            'clinico-geral': ['Dra. Ana Costa', 'Dr. Pedro Oliveira'],
+            'dermatologia': ['Dra. Laura Martins'],
+            'oftalmologia': ['Dr. Carlos Mendes', 'Dra. Rita Souza'],
+            'ortopedia': ['Dr. Fernando Alves'],
+            'pediatria': ['Dra. Juliana Lima', 'Dr. Roberto Costa']
+        };
+
+        document.getElementById('specialty').addEventListener('change', (e) => {
+            const doctorSelect = document.getElementById('doctor');
+            const specialty = e.target.value;
+
+            doctorSelect.innerHTML = '<option value="">Selecione...</option>';
+
+            if (specialty && doctorsBySpecialty[specialty]) {
+                doctorsBySpecialty[specialty].forEach(doctor => {
+                    const option = document.createElement('option');
+                    option.value = doctor;
+                    option.textContent = doctor;
+                    doctorSelect.appendChild(option);
+                });
+            }
+        });
+
+        document.getElementById('editSpecialty').addEventListener('change', (e) => {
+            const doctorSelect = document.getElementById('editDoctor');
+            const specialty = e.target.value;
+
+            doctorSelect.innerHTML = '<option value="">Selecione...</option>';
+
+            if (specialty && doctorsBySpecialty[specialty]) {
+                doctorsBySpecialty[specialty].forEach(doctor => {
+                    const option = document.createElement('option');
+                    option.value = doctor;
+                    option.textContent = doctor;
+                    doctorSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Enviar formulário nova consulta
+        document.getElementById('newAppointmentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Consulta agendada com sucesso! Você receberá uma confirmação por e-mail.');
+            newAppointmentModal.classList.remove('active');
+            overlay.classList.remove('active');
+            e.target.reset();
+        });
+
+        // Enviar formulário edição de consulta
+        document.getElementById('editAppointmentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (currentEditCard) {
+                const date = document.getElementById('editAppointmentDate').value;
+                const time = document.getElementById('editAppointmentTime').value;
+                const doctor = document.getElementById('editDoctor').value;
+                const specialty = document.getElementById('editSpecialty').options[document.getElementById('editSpecialty').selectedIndex].text;
+                const reason = document.getElementById('editReason').value;
+
+                // Formatar data
+                const dateObj = new Date(date + 'T00:00:00');
+                const formattedDate = dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+                // Atualizar card
+                const dateDiv = currentEditCard.querySelector('.appointment-date div');
+                dateDiv.innerHTML = `<strong>${formattedDate}</strong><span>${time}</span>`;
+
+                const doctorDiv = currentEditCard.querySelector('.doctor-info div');
+                doctorDiv.innerHTML = `<strong>${doctor}</strong><span>${specialty}</span>`;
+
+                const reasonSpan = currentEditCard.querySelector('.detail-item:last-child span');
+                if (reasonSpan) {
+                    reasonSpan.textContent = reason;
+                }
+
+                alert('Consulta atualizada com sucesso!');
+            }
+
+            editAppointmentModal.classList.remove('active');
+            overlay.classList.remove('active');
+            e.target.reset();
+        });
+
+        // Função para editar consulta
+        function editAppointment(btn) {
+            currentEditCard = btn.closest('.appointment-card');
+
+            // Extrair dados da consulta
+            const dateText = currentEditCard.querySelector('.appointment-date strong').textContent;
+            const timeText = currentEditCard.querySelector('.appointment-date span').textContent;
+            const doctorName = currentEditCard.querySelector('.doctor-info strong').textContent;
+            const specialtyText = currentEditCard.querySelector('.doctor-info span').textContent;
+            const reasonText = currentEditCard.querySelector('.detail-item:last-child span')?.textContent || '';
+
+            // Popular modal com dados atuais
+            // Converter data de volta para formato ISO
+            const dateMatch = dateText.match(/(\d+) de (\w+) de (\d+)/);
+            if (dateMatch) {
+                const months = {
+                    'janeiro': '01', 'fevereiro': '02', 'março': '03', 'abril': '04',
+                    'maio': '05', 'junho': '06', 'julho': '07', 'agosto': '08',
+                    'setembro': '09', 'outubro': '10', 'novembro': '11', 'dezembro': '12'
+                };
+                const day = dateMatch[1].padStart(2, '0');
+                const month = months[dateMatch[2].toLowerCase()];
+                const year = dateMatch[3];
+                document.getElementById('editAppointmentDate').value = `${year}-${month}-${day}`;
+            }
+
+            document.getElementById('editAppointmentTime').value = timeText;
+            document.getElementById('editReason').value = reasonText;
+
+            // Encontrar especialidade e médico
+            const specialtySelect = document.getElementById('editSpecialty');
+            for (let option of specialtySelect.options) {
+                if (option.text.toLowerCase() === specialtyText.toLowerCase()) {
+                    specialtySelect.value = option.value;
+                    break;
+                }
+            }
+
+            // Trigger change para popular médicos
+            const event = new Event('change');
+            specialtySelect.dispatchEvent(event);
+
+            // Selecionar médico após um pequeno delay
+            setTimeout(() => {
+                const doctorSelect = document.getElementById('editDoctor');
+                doctorSelect.value = doctorName;
+            }, 100);
+
+            // Abrir modal
+            editAppointmentModal.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        // Confirmar consulta
+        function confirmAppointment(btn) {
+            if (confirm('Confirmar sua presença nesta consulta?')) {
+                const card = btn.closest('.appointment-card');
+                const badge = card.querySelector('.status-badge');
+                badge.className = 'status-badge confirmada';
+                badge.innerHTML = '<i class="fas fa-check-circle"></i> Confirmada';
+                card.dataset.status = 'confirmada';
+
+                const actions = card.querySelector('.appointment-actions');
+                actions.innerHTML = `
+                    <button class="btn-edit" onclick="editAppointment(this)">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </button>
+                    <button class="btn-secondary">
+                        <i class="fas fa-calendar-plus"></i>
+                        Adicionar ao Calendário
+                    </button>
+                    <button class="btn-danger" onclick="cancelAppointment(this)">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                `;
+
+                alert('Consulta confirmada com sucesso!');
+            }
+        }
+
+        // Cancelar consulta
+        function cancelAppointment(btn) {
+            if (confirm('Tem certeza que deseja cancelar esta consulta?')) {
+                const card = btn.closest('.appointment-card');
+                const badge = card.querySelector('.status-badge');
+                badge.className = 'status-badge cancelada';
+                badge.innerHTML = '<i class="fas fa-times-circle"></i> Cancelada';
+                card.dataset.status = 'cancelada';
+                card.classList.add('cancelled');
+
+                const actions = card.querySelector('.appointment-actions');
+                actions.innerHTML = `
+                    <button class="btn-primary" onclick="rescheduleAppointment()">
+                        <i class="fas fa-redo"></i>
+                        Reagendar
+                    </button>
+                `;
+
+                alert('Consulta cancelada. Você pode reagendá-la quando desejar.');
+            }
+        }
+
+        // Reagendar
+        function rescheduleAppointment() {
+            newAppointmentModal.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        // Ver prontuário
+        function viewRecord() {
+            window.location.href = 'paciente-historico.html';
+        }
+
+        // Data mínima para agendamento (hoje)
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('appointmentDate').setAttribute('min', today);
+    </script>
+</body>
+
+</html>
