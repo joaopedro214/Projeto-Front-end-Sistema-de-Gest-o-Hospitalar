@@ -49,6 +49,6 @@ O objetivo do sistema **SGHSS** é centralizar:
 
 ## 🛠 Tecnologias e Ferramentas
 - **Desing de interface**: [Balsamiq](https://balsamiq.cloud/s7fpki8/p9sfylv) ou [Link alternativo](https://drive.google.com/file/d/1LXoL9jGQ3u1iSmPUuH9YWKKRMPyH39-U/view?usp=sharing).
-- **Protótipo**: HTML5/CSS3/JS.
+- **Protótipo**: HTML5/CSS3/JS. [Link de acesso ao protótipo](https://projeto-front-end-sistema-de-gest-o.vercel.app/src/pages/cadastro.html).
 - **Diagramação**: Draw.io.
 - **Hospedagem**: Vercel.
